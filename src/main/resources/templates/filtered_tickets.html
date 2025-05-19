@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filtered Tickets</title>
+    <link rel="stylesheet" href="../static/css/detail.css">
+    <head th:replace="header :: header-css"></head>
+</head>
+<body>
+<div th:replace="header :: header"></div>
+<div class="container">
+    <a class="btn btn-primary" href="/ticket/new" role="button">Issue Ticket</a>
+    <br>
+    <a class="btn btn-primary" href="/ticket/checkout" role="button">Checkout Ticket</a>
+
+    <h1>Filtered Ticket List</h1>
+    <form action="/ticket" method="get">
+        <button type="submit">Show All Tickets</button>
+    </form>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Username</th>
+            <th>Ticket Number</th>
+            <th>Vehicle Number</th>
+            <th>Entry Time</th>
+            <th>Exit Time</th>
+            <th>Total Time</th>
+            <th>Total Amount</th>
+            <th>Phone no</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody id="filtered-ticket-table-body">
+        <tr th:each="ticket : ${filteredTickets}" style="text-align: center">
+            <td th:text="${ticket.username}">--</td> <!-- Replace with actual data -->
+            <td th:text="${ticket.ticketNumber}"></td>
+            <td th:text="${ticket.vehicleNumber}"></td>
+            <td th:text="${ticket.entryTime}"></td>
+            <td th:text="${ticket.exitTime}"></td>
+            <td th:text="${ticket.totalTimeStr}"></td>
+            <td th:text="${ticket.totalAmount}"></td>
+            <td th:text="${ticket.phoneNumber}">--</td> <!-- Replace with actual data -->
+            <td>
+                <form action="/ticket/checkout" method="post">
+                    <input type="hidden" name="ticketNumber" th:value="${ticket.ticketNumber}">
+                    <button type="submit" class="checkout-btn">Checkout</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div th:replace="footer :: footer"></div>
+
+</body>
+</html>

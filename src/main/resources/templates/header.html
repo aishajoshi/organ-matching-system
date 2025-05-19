@@ -1,0 +1,55 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+>
+
+<head th:fragment="header-css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/5.3.0/css/bootstrap.min.css/}"/>
+    <link rel="stylesheet" type="text/css"
+          th:href="@{/webjars/font-awesome/6.4.0/web-fonts-with-css/css/fontawesome-all.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    <title th:text="PTM"></title>
+</head>
+
+<body style="background-color:  #3498db;">
+<div th:fragment="header">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/home">Home</a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/ticket">Tickets</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/user">Users</a>
+                    </li>
+
+<!--                    <li class="nav-item">-->
+<!--                        <a class="nav-link" href="/ticket/search">Search</a>-->
+<!--                    </li>-->
+
+                    <li class="nav-item" th:if="${session.authSession.isAuthenticated()}">
+                        <a class="nav-link" th:href="@{/viewProfile}" style="color: #1e90ff"
+                           th:text="${session.authSession.user.fullName}"></a>
+                    </li>
+                    <li class="nav-item" th:if="${session.authSession.isAuthenticated()}">
+                        <a class="nav-link" th:href="@{/logout}" style="color: #1e90ff">Log Out</a>
+                    </li>
+                    <li class="nav-item" th:if="!${session.authSession.isAuthenticated()}">
+                        <a class="nav-link" th:href="@{/login}" style="color: #1e90ff">Log In</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+</body>
+
+</html>

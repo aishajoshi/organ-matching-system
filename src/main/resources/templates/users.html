@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User List</title>
+    <link rel="stylesheet" href="../static/css/detail.css">
+    <head th:replace="header :: header-css"></head>
+</head>
+<body>
+<div th:replace="header :: header"></div>
+<div class="container">
+    <a class="btn btn-primary" href="/register" role="button">Add User</a> <!-- Changed to add user -->
+    <h1>User List</h1> <!-- Changed to User List -->
+    <table>
+        <thead>
+        <tr>
+            <th>Username</th> <!-- Assuming the attribute for username in User entity is username -->
+            <th>Email</th> <!-- Assuming the attribute for email in User entity is email -->
+
+        </tr>
+        </thead>
+        <tbody id="user-table-body"> <!-- Changed to user-table-body -->
+        <tr th:each="user : ${users}" style="text-align: center"> <!-- Changed to iterate over users -->
+            <td th:text="${user.getUserName()}"></td> <!-- Changed to access username attribute of User -->
+            <td th:text="${user.getEmail()}"></td> <!-- Changed to access email attribute of User -->
+
+
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div th:replace="footer :: footer"></div>
+
+</body>
+</html>

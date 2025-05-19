@@ -1,0 +1,20 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="header :: header-css">
+</head>
+
+<body>
+
+<div th:replace="header :: header"></div>
+
+<div class="container" th:object="${user}">
+    <h3 th:text="'Username:' + ${user.getUserName()}"></h3>
+    <h3 th:text="'Email:' + ${user.getEmail()}"></h3>
+</div>
+
+<div th:replace="footer :: footer"></div>
+
+</body>
+
+</html>
