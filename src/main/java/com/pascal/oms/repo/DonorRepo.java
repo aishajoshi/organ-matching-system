@@ -1,29 +1,38 @@
 package com.pascal.oms.repo;
 
 import com.pascal.oms.entities.Donor;
-import com.pascal.oms.repo.Datasource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+
+@Repository
 public class DonorRepo {
 
     private final Datasource datasource;
 
+    @Autowired
     public DonorRepo(Datasource datasource) {
         this.datasource = datasource;
     }
 
 
     public void saveDonor(Donor donor) throws SQLException {
-        String sql = "INSERT INTO donor (Name, Age, BloodType, Contact, Status) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO donor (donor_id, name, age, blood_group, phone, email, status) VALUES (?, ?,?, ?, ?,?, ?)";
         try (PreparedStatement stmt = this.datasource.getConnection().prepareStatement(sql)) {
-            stmt.setString(1, donor.getName());
-            stmt.setInt(2, donor.getAge());
-            stmt.setString(3, donor.getBloodType());
-            stmt.setString(4, donor.getContact());
-            stmt.setString(5, donor.getStatus());
+            stmt.setString(1, donor.getDonorId());
+            stmt.setString(2, donor.getName());
+            stmt.setInt(3, donor.getAge());
+            stmt.setString(4, donor.getBloodGroup());
+            stmt.setString(5, donor.getPhone());
+            stmt.setString(6, donor.getEmail());
+            stmt.setString(7, donor.getStatus());
             stmt.executeUpdate();
         }
     }
@@ -40,110 +49,32 @@ public class DonorRepo {
         ) {
             while (rs.next()) {
                 Donor donor = new Donor();
-                donor.setDonorID(rs.getInt("DonorID"));
-                donor.setName(rs.getString("Name"));
-                donor.setAge(rs.getInt("Age"));
-                donor.setBloodType(rs.getString("BloodType"));
-                donor.setContact(rs.getString("Contact"));
-                donor.setStatus(rs.getString("Status"));
+                donor.setDonorId(rs.getString("donor_id"));
+                donor.setName(rs.getString("name"));
+                donor.setAge(rs.getInt("age"));
+                donor.setBloodGroup(rs.getString("blood_group"));
+                donor.setContact(rs.getString("phone"));
+                donor.setStatus(rs.getString("status"));
                 donors.add(donor);
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
         return donors;
     }
-    public Donor getDonorById(int id) {
-        String sql = "SELECT * FROM donor WHERE DonorID = ?";
-        try (
-                Connection conn = this.datasource.getConnection();
-                PreparedStatement stmt = conn.prepareStatement(sql)
-        ) {
-            stmt.setInt(1, id);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    Donor donor = new Donor();
-                    donor.setDonorID(rs.getInt("DonorID"));
-                    donor.setName(rs.getString("Name"));
-                    donor.setAge(rs.getInt("Age"));
-                    donor.setBloodType(rs.getString("BloodType"));
-                    donor.setContact(rs.getString("Contact"));
-                    donor.setStatus(rs.getString("Status"));
-                    return donor;
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
-
-    //
-    public boolean updateDonor(Donor donor) {
-        String sql = "UPDATE donor SET Name = ?, Age = ?, BloodType = ?, Contact = ?, Status = ? WHERE DonorID = ?";
-        try (
-                Connection conn = this.datasource.getConnection();
-                PreparedStatement stmt = conn.prepareStatement(sql)
-        ) {
+    public boolean updateDonor(Donor donor) throws SQLException {
+        String sql = "UPDATE donor SET name=?, age=?, blood_group=?, phone=?, email=?, status=? WHERE donor_id=?";
+        try (PreparedStatement stmt = this.datasource.getConnection().prepareStatement(sql)) {
             stmt.setString(1, donor.getName());
             stmt.setInt(2, donor.getAge());
-            stmt.setString(3, donor.getBloodType());
-            stmt.setString(4, donor.getContact());
-            stmt.setString(5, donor.getStatus());
-            stmt.setInt(6, donor.getDonorID());
-
+            stmt.setString(3, donor.getBloodGroup());
+            stmt.setString(4, donor.getPhone());
+            stmt.setString(5, donor.getEmail());
+            stmt.setString(6, donor.getStatus());
+            stmt.setString(7, donor.getDonorId());
             return stmt.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-        return false;
-    }
-
-    //
-//
-    public boolean deleteDonor(int donorId) {
-        String sql = "DELETE FROM donor WHERE DonorID = ?";
-        try (
-                Connection conn = this.datasource.getConnection();
-                PreparedStatement stmt = conn.prepareStatement(sql)
-        ) {
-            stmt.setInt(1, donorId);
-            return stmt.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    //
-    public List<Donor> findDonorsByBloodType(String bloodType) {
-        List<Donor> donors = new ArrayList<>();
-        String sql = "SELECT * FROM donor WHERE BloodType = ?";
-
-        try (
-                Connection conn = this.datasource.getConnection();
-                PreparedStatement stmt = conn.prepareStatement(sql)
-        ) {
-            stmt.setString(1, bloodType);
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    Donor donor = new Donor();
-                    donor.setDonorID(rs.getInt("DonorID"));
-                    donor.setName(rs.getString("Name"));
-                    donor.setAge(rs.getInt("Age"));
-                    donor.setBloodType(rs.getString("BloodType"));
-                    donor.setContact(rs.getString("Contact"));
-                    donor.setStatus(rs.getString("Status"));
-                    donors.add(donor);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return donors;
     }
 }

@@ -30,6 +30,9 @@ public class WebSecurityConfig {
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web
                 .ignoring()
-                .requestMatchers("/webjars/**", "/js/**", "/error/**", "/css/**", "/fonts/**", "/libs/**", "/img/**", "/h2-console/**");
+                .requestMatchers(
+                        "/webjars/**", "/js/**", "/error/**", "/css/**", "/fonts/**", "/libs/**", "/img/**", "/h2-console/**",
+                        "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/docs"
+                );
     }
 }

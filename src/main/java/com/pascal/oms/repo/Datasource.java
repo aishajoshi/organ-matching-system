@@ -6,18 +6,19 @@ package com.pascal.oms.repo;
  */
 
 import com.pascal.oms.Settings;
+import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 
+@Component
 public class Datasource {
-    private static final String JDBC_URL = String.format("jdbc:mysql://%s:%s/%s?useSSL=false", Settings.DATABASE_HOST, Settings.DATABASE_PORT, Settings.DATABASE_NAME);
 
     public Connection getConnection() {
         Connection connection;
         try {
-            System.out.println(JDBC_URL);
-            connection = DriverManager.getConnection(JDBC_URL, Settings.DATABASE_USER, Settings.DATABASE_PASSWORD);
+            System.out.println("Connecting to database: " + Settings.DATABASE_URL);
+            connection = DriverManager.getConnection(Settings.DATABASE_URL, Settings.DATABASE_USER, Settings.DATABASE_PASSWORD);
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Failed to connect to the database");

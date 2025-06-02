@@ -1,47 +1,59 @@
-create  database oms;
+CREATE DATABASE IF NOT EXISTS oms;
 use oms;
 create table user
 (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    full_name VARCHAR(100) NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
-    phone VARCHAR(15) NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    user_type ENUM('Donor', 'Recipient', 'Admin') NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    user_id    VARCHAR(36) PRIMARY KEY,
+    full_name  VARCHAR(100) NOT NULL,
+    email      VARCHAR(100) NULL,
+    phone      VARCHAR(15)  NULL,
+    password   VARCHAR(255) NOT NULL,
+    user_type  varchar(30)  NOT NULL,
+    role       VARCHAR(30)  NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 create table donor
 (
-    DonorID INT PRIMARY KEY AUTO_INCREMENT,
-    Name VARCHAR(100) NOT NULL,
-    Age INT NOT NULL,
-    BloodType CHAR(5) NOT NULL,
-    Contact VARCHAR(100) NOT NULL,
-    Status VARCHAR(50) NOT NULL
+    donor_id    VARCHAR(36) PRIMARY KEY,
+    name        VARCHAR(100) NOT NULL,
+    dob         DATE         NULL,
+    age         INT          NOT NULL,
+    blood_group CHAR(5)      NOT NULL,
+    email       VARCHAR(100) NULL,
+    phone       VARCHAR(15)  NULL,
+    status      VARCHAR(50)  NOT NULL,
+    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 
 );
-CREATE TABLE recipients (
-RecipientID INT PRIMARY KEY AUTO_INCREMENT,
-Name VARCHAR(100) NOT NULL,
-Age INT NOT NULL,
-BloodType CHAR(5) NOT NULL,
-RequiredOrgan VARCHAR(50) NOT NULL,
-Contact VARCHAR(100) NOT NULL,
-UrgencyLevel VARCHAR(50) NOT NULL
-
+CREATE TABLE recipient
+(
+    recipient_id   INT PRIMARY KEY AUTO_INCREMENT,
+    name           VARCHAR(100) NOT NULL,
+    dob            DATE         NULL,
+    age            INT          NOT NULL,
+    blood_group    CHAR(5)      NOT NULL,
+    required_organ VARCHAR(50)  NOT NULL,
+    email          VARCHAR(100) NULL,
+    phone          VARCHAR(15)  NULL,
+    urgency_level  VARCHAR(50)  NOT NULL,
+    status         VARCHAR(50)  NOT NULL,
+    created_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 
 );
-CREATE TABLE Organ (
- OrganID INT PRIMARY KEY AUTO_INCREMENT,
- Type VARCHAR(50) NOT NULL,
- AvailabilityStatus VARCHAR(50) NOT NULL,
- DonorID INT,
- FOREIGN KEY (DonorID) REFERENCES Donor(DonorID)
+CREATE TABLE organ
+(
+    organ_id      INT PRIMARY KEY AUTO_INCREMENT,
+    type          VARCHAR(50)  NOT NULL,
+    description   VARCHAR(100) NOT NULL,
+    status        VARCHAR(50)  NOT NULL,
+    donor_id      VARCHAR(36),
+    donated_date  TIMESTAMP    NULL,
+    recipient_id  VARCHAR(36),
+    received_date TIMESTAMP    NULL,
+    created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (donor_id) REFERENCES donor (donor_id)
 );
-
-
-
-
-
-
 

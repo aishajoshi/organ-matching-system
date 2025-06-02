@@ -1,4 +1,4 @@
-package com.pascal.oms.controllers;
+package com.pascal.oms.controller;
 
 import com.pascal.oms.endpoint.ParkingTicketManagementService;
 import com.pascal.oms.entities.Session;
@@ -18,7 +18,7 @@ public class HomeController {
         System.out.println("home");
         Session s = Helper.getAuthSession(session);
         Helper.setAuthSession(model, s);
-        return "home";
+        return "dashboard";
     }
 
     @GetMapping(value = {"/profile"})
@@ -35,5 +35,10 @@ public class HomeController {
     @GetMapping("/about")
     public String about() {
         return "about";
+    }
+
+    @GetMapping("/donor")
+    public String donor() {
+        return "donor";
     }
 }

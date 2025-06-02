@@ -1,19 +1,21 @@
 package com.pascal.oms.service;
 
 import com.pascal.oms.entities.Donor;
+import com.pascal.oms.entities.Status;
 import com.pascal.oms.repo.DonorRepo;
+import com.pascal.oms.utils.Utils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class DonorService {
 
     private final DonorRepo donorRepo;
 
+    @Autowired
     public DonorService(DonorRepo donorRepo) {
         this.donorRepo = donorRepo;
     }
@@ -24,6 +26,8 @@ public class DonorService {
                 System.out.println("Invalid donor details.");
                 return null;
             }
+            donor.setDonorId(Utils.UUID());
+            donor.setStatus(Status.ACTIVE.name());
             donorRepo.saveDonor(donor);
             return donor;
         } catch (SQLException e) {
@@ -32,14 +36,10 @@ public class DonorService {
         }
     }
 
-    //
-   public Donor getDonorById(int id) {
-    return donorRepo.getDonorById(id);
-}
 
     public List<Donor> getAllDonors() {
         try {
-           return this.donorRepo.getAllDonors();
+            return this.donorRepo.getAllDonors();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -47,37 +47,36 @@ public class DonorService {
 
         return null;
     }
-//
+
     public boolean updateDonor(Donor donor) {
-    try {
-        if (!isValidDonor(donor)) {
-            System.out.println("Invalid donor details.");
+        try {
+            if (!isValidDonor(donor)) {
+                System.out.println("Invalid donor details.");
+                return false;
+            }
+            return donorRepo.updateDonor(donor);
+        } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
-        return donorRepo.updateDonor(donor);
-    } catch (Exception e) {
-        e.printStackTrace();
-        return false;
-    }
-}
-//
-  public boolean deleteDonor(int id) {
-    try {
-        return donorRepo.deleteDonor(id);
-    } catch (Exception e) {
-        e.printStackTrace();
-        return false;
-    }
-}
-    public List<Donor> getDonorsByBloodType(String bloodType) {
-        return donorRepo.findDonorsByBloodType(bloodType);
     }
 
-
+    /// /
+//  public boolean deleteDonor(int id) {
+//    try {
+//        return donorRepo.deleteDonor(id);
+//    } catch (Exception e) {
+//        e.printStackTrace();
+//        return false;
+//    }
+//}
+//    public List<Donor> getDonorsByBloodType(String bloodType) {
+//        return donorRepo.findDonorsByBloodType(bloodType);
+//    }
     private boolean isValidDonor(Donor donor) {
         return donor.getName() != null && !donor.getName().isEmpty()
                 && donor.getAge() > 0
-                && donor.getBloodType() != null && !donor.getBloodType().isEmpty()
-                && donor.getContact() != null && !donor.getContact().isEmpty();
+                && donor.getBloodGroup() != null && !donor.getBloodGroup().isEmpty()
+                && donor.getPhone() != null && !donor.getPhone().isEmpty();
     }
 }

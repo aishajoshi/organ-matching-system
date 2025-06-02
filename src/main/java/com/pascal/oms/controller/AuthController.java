@@ -1,4 +1,4 @@
-package com.pascal.oms.controllers;
+package com.pascal.oms.controller;
 
 import com.pascal.oms.endpoint.ParkingTicketManagementService;
 import com.pascal.oms.entities.Session;
