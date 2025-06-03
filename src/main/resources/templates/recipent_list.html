@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Recipient List - Organ Matching System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background: #f9fafb; margin: 0; }
+        .container { max-width: 900px; margin: 2rem auto; background: #fff; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); padding: 2rem; }
+        h2 { text-align: center; margin-bottom: 1.5rem; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px 10px; border-bottom: 1px solid #e5e7eb; text-align: left; }
+        th { background: #4f46e5; color: #fff; }
+        tr:last-child td { border-bottom: none; }
+        .edit-btn { background: #06b6d4; color: #fff; border: none; padding: 7px 16px; border-radius: 5px; cursor: pointer; transition: background 0.2s; }
+        .edit-btn:hover { background: #0891b2; }
+        .add-btn { display: inline-block; margin-bottom: 1rem; background: #4f46e5; color: #fff; padding: 10px 18px; border-radius: 6px; text-decoration: none; font-weight: 600; }
+        .add-btn:hover { background: #3730a3; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Recipient List</h2>
+    <a href="/recipient/register" class="add-btn">Add New Recipient</a>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Blood Group</th>
+            <th>Required Organ</th>
+            <th>Contact</th>
+            <th>Urgency</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="recipient : ${recipients}">
+            <td th:text="${recipient.recipientId}"></td>
+            <td th:text="${recipient.name}"></td>
+            <td th:text="${recipient.age}"></td>
+            <td th:text="${recipient.bloodGroup}"></td>
+            <td th:text="${recipient.requiredOrgan}"></td>
+            <td th:text="${recipient.contact}"></td>
+            <td th:text="${recipient.urgencyLevel}"></td>
+            <td>
+                <a th:href="@{'/recipient/edit/' + ${recipient.recipientId}}" class="edit-btn">Edit</a>
+            </td>
+        </tr>
+        <tr th:if="${recipients == null or #lists.isEmpty(recipients)}">
+            <td colspan="8" style="text-align:center;">No recipients found.</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
