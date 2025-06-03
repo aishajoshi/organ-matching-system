@@ -1,5 +1,7 @@
 package com.pascal.oms.entities;
 
+import java.util.List;
+
 public class Donor {
     private String donorId;
     private String name;
@@ -8,6 +10,7 @@ public class Donor {
     private String phone;
     private String email;
     private String status;
+    private List<Organ> organs;
 
     public String getDonorId() {
         return donorId;
@@ -73,6 +76,14 @@ public class Donor {
         this.email = email;
     }
 
+    public List<Organ> getOrgans() {
+        return organs;
+    }
+
+    public void setOrgans(List<Organ> organs) {
+        this.organs = organs;
+    }
+
     @Override
     public String toString() {
         return "Donor{" +
@@ -83,6 +94,7 @@ public class Donor {
                 ", phone='" + phone + '\'' +
                 ", email='" + email + '\'' +
                 ", status='" + status + '\'' +
+                ", organs=" + organs +
                 '}';
     }
 }

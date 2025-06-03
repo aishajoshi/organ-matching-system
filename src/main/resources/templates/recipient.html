@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${editMode} ? 'Edit Recipient' : 'Register Recipient'">Recipient Form</title>
+    <link rel="stylesheet" th:href="@{/css/signup.css}"/>
+</head>
+<body>
+<div class="container">
+    <h2 th:text="${editMode} ? 'Edit Recipient' : 'Register as Recipient'"></h2>
+    <form th:action="${editMode} ? @{/recipient/update} : @{/recipient/register}" th:object="${recipient}"
+          method="post">
+        <input type="hidden" th:if="${editMode}" th:field="*{recipientId}"/>
+        <div>
+            <label for="name">Name:</label>
+            <input type="text" id="name" th:field="*{name}" required/>
+        </div>
+        <div>
+            <label for="age">Age:</label>
+            <input type="number" id="age" th:field="*{age}" required min="0"/>
+        </div>
+        <div>
+            <label for="bloodGroup">Blood Group:</label>
+            <input type="text" id="bloodGroup" th:field="*{bloodGroup}" required/>
+        </div>
+        <div>
+            <label for="phone">Phone:</label>
+            <input type="text" id="phone" th:field="*{phone}" required/>
+        </div>
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" id="email" th:field="*{email}" required/>
+        </div>
+        <div>
+            <button type="submit" th:text="${editMode} ? 'Update' : 'Register'"></button>
+        </div>
+    </form>
+    <div th:if="${param.success}">
+        <p class="success">Registration successful!</p>
+    </div>
+    <div th:if="${param.updated}">
+        <p class="success">Recipient updated successfully!</p>
+    </div>
+    <a th:href="@{/recipient/list}">Back to Recipient List</a>
+</div>
+</body>
+</html>

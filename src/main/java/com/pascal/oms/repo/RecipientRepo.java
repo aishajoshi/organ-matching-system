@@ -1,90 +1,78 @@
 package com.pascal.oms.repo;
 
 import com.pascal.oms.entities.Recipient;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class RecipientRepo {
 
     private final Datasource datasource;
 
+    @Autowired
     public RecipientRepo(Datasource datasource) {
         this.datasource = datasource;
     }
 
     public void saveRecipient(Recipient recipient) throws SQLException {
-        String sql = "INSERT INTO recipients (Name, Age, BloodType, RequiredOrgan, Contact, UrgencyLevel) " +
-                "VALUES (?, ?, ?, ?, ?, ?)";
-
-        try (Connection conn = datasource.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setString(1, recipient.getName());
-            stmt.setInt(2, recipient.getAge());
-            stmt.setString(3, recipient.getBloodType());
-            stmt.setString(4, recipient.getRequiredOrgan());
-            stmt.setString(5, recipient.getContact());
-            stmt.setString(6, recipient.getUrgencyLevel());
-
+        String sql = "INSERT INTO Recipient (recipient_id, name, age, blood_group, phone, email, status) VALUES (?, ?,?, ?, ?,?, ?)";
+        try (PreparedStatement stmt = this.datasource.getConnection().prepareStatement(sql)) {
+            stmt.setString(1, recipient.getRecipientId());
+            stmt.setString(2, recipient.getName());
+            stmt.setInt(3, recipient.getAge());
+            stmt.setString(4, recipient.getBloodGroup());
+            stmt.setString(5, recipient.getPhone());
+            stmt.setString(6, recipient.getEmail());
+            stmt.setString(7, recipient.getStatus());
             stmt.executeUpdate();
         }
     }
 
+
     public List<Recipient> getAllRecipients() {
-        List<Recipient> recipients = new ArrayList<>();
-        String sql = "SELECT * FROM recipients";
+        List<Recipient> Recipients = new ArrayList<>();
+        String sql = "SELECT * FROM Recipient";
 
-        try (Connection conn = datasource.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
-
+        try (
+                Connection conn = this.datasource.getConnection(); // ✅ Get connection properly
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                ResultSet rs = stmt.executeQuery()
+        ) {
             while (rs.next()) {
-                Recipient recipient = new Recipient();
-                recipient.setRecipientID(rs.getInt("RecipientID"));
-                recipient.setName(rs.getString("Name"));
-                recipient.setAge(rs.getInt("Age"));
-                recipient.setBloodType(rs.getString("BloodType"));
-                recipient.setRequiredOrgan(rs.getString("RequiredOrgan"));
-                recipient.setContact(rs.getString("Contact"));
-                recipient.setUrgencyLevel(rs.getString("UrgencyLevel"));
-                // Additional organ-specific fields can be added here
-                recipients.add(recipient);
+                Recipient Recipient = new Recipient();
+                Recipient.setRecipientId(rs.getString("Recipient_id"));
+                Recipient.setName(rs.getString("name"));
+                Recipient.setAge(rs.getInt("age"));
+                Recipient.setBloodGroup(rs.getString("blood_group"));
+                Recipient.setPhone(rs.getString("phone"));
+                Recipient.setStatus(rs.getString("status"));
+                Recipients.add(Recipient);
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        return recipients;
+        return Recipients;
     }
 
-    // Optional: Get recipient by ID
-    public Recipient getRecipientById(int id) {
-        String sql = "SELECT * FROM recipients WHERE RecipientID = ?";
-        try (Connection conn = datasource.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setInt(1, id);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    Recipient recipient = new Recipient();
-                    recipient.setRecipientID(rs.getInt("RecipientID"));
-                    recipient.setName(rs.getString("Name"));
-                    recipient.setAge(rs.getInt("Age"));
-                    recipient.setBloodType(rs.getString("BloodType"));
-                    recipient.setRequiredOrgan(rs.getString("RequiredOrgan"));
-                    recipient.setContact(rs.getString("Contact"));
-                    recipient.setUrgencyLevel(rs.getString("UrgencyLevel"));
-                    return recipient;
-                }
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
+    public boolean updateRecipient(Recipient recipient) throws SQLException {
+        String sql = "UPDATE Recipient SET name=?, age=?, blood_group=?, phone=?, email=?, status=? WHERE recipient_id=?";
+        try (PreparedStatement stmt = this.datasource.getConnection().prepareStatement(sql)) {
+            stmt.setString(1, recipient.getName());
+            stmt.setInt(2, recipient.getAge());
+            stmt.setString(3, recipient.getBloodGroup());
+            stmt.setString(4, recipient.getPhone());
+            stmt.setString(5, recipient.getEmail());
+            stmt.setString(6, recipient.getStatus());
+            stmt.setString(7, recipient.getRecipientId());
+            return stmt.executeUpdate() > 0;
         }
-        return null;
     }
 }
 

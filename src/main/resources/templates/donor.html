@@ -27,6 +27,13 @@
             <label for="contact">Contact:</label>
             <input type="text" id="contact" th:field="*{contact}" required/>
         </div>
+<!--        <div>-->
+        <!--            <label for="organs">Organs to Donate:</label>-->
+        <!--            <select id="organs" th:field="*{organs}" multiple required>-->
+        <!--                <option th:each="organ : ${organList}" th:value="${organ}" th:text="${organ.type}"></option>-->
+        <!--            </select>-->
+        <!--            <small>Hold Ctrl (Windows) or Command (Mac) to select multiple organs.</small>-->
+        <!--        </div>-->
         <div>
             <button type="submit" th:text="${editMode} ? 'Update' : 'Register'"></button>
         </div>

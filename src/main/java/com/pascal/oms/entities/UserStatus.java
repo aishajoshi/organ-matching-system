@@ -5,7 +5,7 @@ package com.pascal.oms.entities;
  * Created on 02/06/2025.
  */
 
-public enum Status {
+public enum UserStatus {
     ACTIVE("ACTIVE"),
     INACTIVE("INACTIVE"),
     PENDING("PENDING"),
@@ -14,7 +14,7 @@ public enum Status {
 
     private final String status;
 
-    Status(String status) {
+    UserStatus(String status) {
         this.status = status;
     }
 

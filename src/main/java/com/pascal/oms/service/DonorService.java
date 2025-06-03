@@ -1,7 +1,7 @@
 package com.pascal.oms.service;
 
 import com.pascal.oms.entities.Donor;
-import com.pascal.oms.entities.Status;
+import com.pascal.oms.entities.UserStatus;
 import com.pascal.oms.repo.DonorRepo;
 import com.pascal.oms.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ public class DonorService {
                 return null;
             }
             donor.setDonorId(Utils.UUID());
-            donor.setStatus(Status.ACTIVE.name());
+            donor.setStatus(UserStatus.ACTIVE.name());
             donorRepo.saveDonor(donor);
             return donor;
         } catch (SQLException e) {
@@ -61,18 +61,7 @@ public class DonorService {
         }
     }
 
-    /// /
-//  public boolean deleteDonor(int id) {
-//    try {
-//        return donorRepo.deleteDonor(id);
-//    } catch (Exception e) {
-//        e.printStackTrace();
-//        return false;
-//    }
-//}
-//    public List<Donor> getDonorsByBloodType(String bloodType) {
-//        return donorRepo.findDonorsByBloodType(bloodType);
-//    }
+
     private boolean isValidDonor(Donor donor) {
         return donor.getName() != null && !donor.getName().isEmpty()
                 && donor.getAge() > 0

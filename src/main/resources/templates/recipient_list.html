@@ -29,9 +29,9 @@
             <th>Name</th>
             <th>Age</th>
             <th>Blood Group</th>
-            <th>Required Organ</th>
-            <th>Contact</th>
-            <th>Urgency</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Status</th>
             <th>Action</th>
         </tr>
         </thead>
@@ -41,9 +41,9 @@
             <td th:text="${recipient.name}"></td>
             <td th:text="${recipient.age}"></td>
             <td th:text="${recipient.bloodGroup}"></td>
-            <td th:text="${recipient.requiredOrgan}"></td>
-            <td th:text="${recipient.contact}"></td>
-            <td th:text="${recipient.urgencyLevel}"></td>
+            <td th:text="${recipient.email}"></td>
+            <td th:text="${recipient.phone}"></td>
+            <td th:text="${recipient.status}"></td>
             <td>
                 <a th:href="@{'/recipient/edit/' + ${recipient.recipientId}}" class="edit-btn">Edit</a>
             </td>

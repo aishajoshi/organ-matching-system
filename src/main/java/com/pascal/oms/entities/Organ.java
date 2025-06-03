@@ -1,65 +1,143 @@
-//package com.pascal.oms.entities;
-//
-//import jakarta.persistence.*;
-//
-//@Entity
-//@Table(name = "organ")
-//public class Organ {
-//
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @Column(name = "OrganID")
-//    private int organId;
-//
-//    @Column(name = "Type", nullable = false)
-//    private String type; // Heart, Kidney, Liver
-//
-//    @Column(name = "AvailabilityStatus", nullable = false)
-//    private String availabilityStatus; // Available, Matched, Transplanted, etc.
-//
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "DonorID", nullable = false)
-//    private Donor donor;
-//
-//    // Constructors
-//    public Organ() {}
-//
-//    public Organ(String type, String availabilityStatus, Donor donor) {
-//        this.type = type;
-//        this.availabilityStatus = availabilityStatus;
-//        this.donor = donor;
-//    }
-//
-//    // Getters and Setters
-//    public int getOrganId() {
-//        return organId;
-//    }
-//
-//    public void setOrganId(int organId) {
-//        this.organId = organId;
-//    }
-//
-//    public String getType() {
-//        return type;
-//    }
-//
-//    public void setType(String type) {
-//        this.type = type;
-//    }
-//
-//    public String getAvailabilityStatus() {
-//        return availabilityStatus;
-//    }
-//
-//    public void setAvailabilityStatus(String availabilityStatus) {
-//        this.availabilityStatus = availabilityStatus;
-//    }
-//
-//    public Donor getDonor() {
-//        return donor;
-//    }
-//
-//    public void setDonor(Donor donor) {
-//        this.donor = donor;
-//    }
-//}
+package com.pascal.oms.entities;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+public class Organ {
+    private String organId;
+    private String organName;
+    private String donorId;
+    private String recipientId;
+    private OrganType organType;
+    private BloodGroup bloodGroup;
+    private OrganStatus status;
+    private List<String> compatibleBloodTypes;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private LocalDateTime donatedDate;
+    private LocalDateTime expiryDate;
+    private LocalDateTime receivedDate;
+
+    public String getOrganId() {
+        return organId;
+    }
+
+    public void setOrganId(String organId) {
+        this.organId = organId;
+    }
+
+    public String getOrganName() {
+        return organName;
+    }
+
+    public void setOrganName(String organName) {
+        this.organName = organName;
+    }
+
+    public String getDonorId() {
+        return donorId;
+    }
+
+    public void setDonorId(String donorId) {
+        this.donorId = donorId;
+    }
+
+    public String getRecipientId() {
+        return recipientId;
+    }
+
+    public void setRecipientId(String recipientId) {
+        this.recipientId = recipientId;
+    }
+
+    public OrganType getOrganType() {
+        return organType;
+    }
+
+    public void setOrganType(OrganType organType) {
+        this.organType = organType;
+    }
+
+    public BloodGroup getBloodGroup() {
+        return bloodGroup;
+    }
+
+    public void setBloodGroup(BloodGroup bloodGroup) {
+        this.bloodGroup = bloodGroup;
+    }
+
+    public OrganStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(OrganStatus status) {
+        this.status = status;
+    }
+
+    public List<String> getCompatibleBloodTypes() {
+        return compatibleBloodTypes;
+    }
+
+    public void setCompatibleBloodTypes(List<String> compatibleBloodTypes) {
+        this.compatibleBloodTypes = compatibleBloodTypes;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public LocalDateTime getDonatedDate() {
+        return donatedDate;
+    }
+
+    public void setDonatedDate(LocalDateTime donatedDate) {
+        this.donatedDate = donatedDate;
+    }
+
+    public LocalDateTime getExpiryDate() {
+        return expiryDate;
+    }
+
+    public void setExpiryDate(LocalDateTime expiryDate) {
+        this.expiryDate = expiryDate;
+    }
+
+    public LocalDateTime getReceivedDate() {
+        return receivedDate;
+    }
+
+    public void setReceivedDate(LocalDateTime receivedDate) {
+        this.receivedDate = receivedDate;
+    }
+
+    @Override
+    public String toString() {
+        return "Organ{" +
+                "organId='" + organId + '\'' +
+                ", organName='" + organName + '\'' +
+                ", donorId='" + donorId + '\'' +
+                ", recipientId='" + recipientId + '\'' +
+                ", organType=" + organType +
+                ", bloodGroup=" + bloodGroup +
+                ", status=" + status +
+                ", compatibleBloodTypes=" + compatibleBloodTypes +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", donatedDate=" + donatedDate +
+                ", expiryDate=" + expiryDate +
+                ", receivedDate=" + receivedDate +
+                '}';
+    }
+}

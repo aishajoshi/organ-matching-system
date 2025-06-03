@@ -1,29 +1,32 @@
 package com.pascal.oms.entities;
 
+import java.util.List;
+
 public class Recipient {
 
-    private int recipientID;
+    private String recipientId;
     private String name;
     private int age;
-    private String bloodType;
-    private String requiredOrgan;
-    private String contact;
-    private String urgencyLevel;
+    private String bloodGroup;
+    private String phone;
+    private String email;
+    private String status;
+    private List<Organ> organs;
 
-    // Organ.java-specific fields
-    private Integer meldScore;      // For liver recipients
-    private Integer waitingTime;    // In days (for kidney & heart)
+    private int urgencyLevel;
 
-    public Recipient() {}
+    private float meldScore;      // For liver recipients
+    private int waitingTime;    // In days (for kidney & heart)
 
-    // Getters and Setters
-
-    public int getRecipientID() {
-        return recipientID;
+    public Recipient() {
     }
 
-    public void setRecipientID(int recipientID) {
-        this.recipientID = recipientID;
+    public String getRecipientId() {
+        return recipientId;
+    }
+
+    public void setRecipientId(String recipientId) {
+        this.recipientId = recipientId;
     }
 
     public String getName() {
@@ -42,51 +45,84 @@ public class Recipient {
         this.age = age;
     }
 
-    public String getBloodType() {
-        return bloodType;
+    public String getBloodGroup() {
+        return bloodGroup;
     }
 
-    public void setBloodType(String bloodType) {
-        this.bloodType = bloodType;
+    public void setBloodGroup(String bloodGroup) {
+        this.bloodGroup = bloodGroup;
     }
 
-    public String getRequiredOrgan() {
-        return requiredOrgan;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setRequiredOrgan(String requiredOrgan) {
-        this.requiredOrgan = requiredOrgan;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
-    public String getContact() {
-        return contact;
+    public String getEmail() {
+        return email;
     }
 
-    public void setContact(String contact) {
-        this.contact = contact;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public String getUrgencyLevel() {
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public List<Organ> getOrgans() {
+        return organs;
+    }
+
+    public void setOrgans(List<Organ> organs) {
+        this.organs = organs;
+    }
+
+    public int getUrgencyLevel() {
         return urgencyLevel;
     }
 
-    public void setUrgencyLevel(String urgencyLevel) {
+    public void setUrgencyLevel(int urgencyLevel) {
         this.urgencyLevel = urgencyLevel;
     }
 
-    public Integer getMeldScore() {
+    public float getMeldScore() {
         return meldScore;
     }
 
-    public void setMeldScore(Integer meldScore) {
+    public void setMeldScore(float meldScore) {
         this.meldScore = meldScore;
     }
 
-    public Integer getWaitingTime() {
+    public int getWaitingTime() {
         return waitingTime;
     }
 
-    public void setWaitingTime(Integer waitingTime) {
+    public void setWaitingTime(int waitingTime) {
         this.waitingTime = waitingTime;
+    }
+
+    @Override
+    public String toString() {
+        return "Recipient{" +
+                "recipientId='" + recipientId + '\'' +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                ", bloodGroup='" + bloodGroup + '\'' +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
+                ", status='" + status + '\'' +
+                ", organs=" + organs +
+                ", urgencyLevel=" + urgencyLevel +
+                ", meldScore=" + meldScore +
+                ", waitingTime=" + waitingTime +
+                '}';
     }
 }
