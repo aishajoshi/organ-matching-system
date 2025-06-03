@@ -35,7 +35,7 @@ public class RecipientController {
     public String registerRecipient(@ModelAttribute("recipient") Recipient recipient, Model model) {
         Recipient savedRecipient = recipientService.registerRecipient(recipient);
         if (savedRecipient != null) {
-            return "redirect:/recipients/list"; // Redirect to recipient list page
+            return "redirect:/recipient/list"; // Redirect to recipient list page
         } else {
             model.addAttribute("error", "Failed to register recipient.");
             return "recipient";

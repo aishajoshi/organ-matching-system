@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${editMode} ? 'Edit Organ' : 'Register Organ'">Organ Form</title>
+    <link rel="stylesheet" th:href="@{/css/signup.css}" />
+</head>
+<body>
+<div class="container">
+    <h2 th:text="${editMode} ? 'Edit Organ Details' : 'Register an Organ'"></h2>
+
+    <form th:action="${editMode} ? @{/organ/update} : @{/organ/save}" th:object="${organ}" method="post">
+        <input type="hidden" th:if="${editMode}" th:field="*{organId}" />
+
+        <!-- Donor ID input -->
+        <div>
+            <label for="donorId">Donor ID:</label>
+            <input type="text" id="donorId" th:field="*{donorId}" placeholder="Enter Donor ID" required />
+        </div>
+
+        <!-- Organ Name -->
+        <div>
+            <label for="organName">Organ Name:</label>
+            <input type="text" id="organName" th:field="*{organName}" required />
+        </div>
+
+        <!-- Organ Type (Only Kidney, Liver, Heart) -->
+        <div>
+            <label for="organType">Organ Type:</label>
+            <select id="organType" th:field="*{organType}" required>
+                <option value="">--Select Type--</option>
+                <option th:value="KIDNEY">Kidney</option>
+                <option th:value="LIVER">Liver</option>
+                <option th:value="HEART">Heart</option>
+            </select>
+        </div>
+
+        <!-- Blood Group -->
+        <div>
+            <label for="bloodGroup">Blood Group:</label>
+            <select id="bloodGroup" th:field="*{bloodGroup}" required>
+                <option value="">--Select Blood Group--</option>
+                <option th:value="A_POS">A+</option>
+                <option th:value="A_NEG">A-</option>
+                <option th:value="B_POS">B+</option>
+                <option th:value="B_NEG">B-</option>
+                <option th:value="AB_POS">AB+</option>
+                <option th:value="AB_NEG">AB-</option>
+                <option th:value="O_POS">O+</option>
+                <option th:value="O_NEG">O-</option>
+            </select>
+        </div>
+
+        <!-- Organ Status -->
+        <div>
+            <label for="status">Organ Status:</label>
+            <select id="status" th:field="*{status}" required>
+                <option value="">--Select Status--</option>
+                <option th:value="AVAILABLE">Available</option>
+                <option th:value="MATCHED">Matched</option>
+                <option th:value="TRANSPLANTED">Transplanted</option>
+            </select>
+        </div>
+
+        <!-- Submit -->
+        <div>
+            <button type="submit" th:text="${editMode} ? 'Update Organ' : 'Register Organ'"></button>
+        </div>
+    </form>
+
+    <!-- Messages -->
+    <div th:if="${param.success}">
+        <p class="success">Organ registered successfully!</p>
+    </div>
+    <div th:if="${param.updated}">
+        <p class="success">Organ updated successfully!</p>
+    </div>
+
+    <a th:href="@{/organ/list}">Back to Organ List</a>
+</div>
+</body>
+</html>
