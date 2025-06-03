@@ -24,8 +24,8 @@ public class OrganRepo {
 
     public void saveOrgan(Organ organ) throws SQLException {
         String sql = "INSERT INTO organ (organ_id, organ_name, donor_id, recipient_id, organ_type, blood_group, " +
-                "status, created_at, updated_at, donated_date, expiry_date, received_date) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                "status,donated_date, expiry_date, received_date) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = datasource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -37,11 +37,9 @@ public class OrganRepo {
             stmt.setString(5, organ.getOrganType().name());
             stmt.setString(6, organ.getBloodGroup().name());
             stmt.setString(7, organ.getStatus().name());
-            stmt.setTimestamp(8, Timestamp.valueOf(organ.getCreatedAt()));
-            stmt.setTimestamp(9, Timestamp.valueOf(organ.getUpdatedAt()));
-            stmt.setTimestamp(10, Timestamp.valueOf(organ.getDonatedDate()));
-            stmt.setTimestamp(11, Timestamp.valueOf(organ.getExpiryDate()));
-            stmt.setTimestamp(12, Timestamp.valueOf(organ.getReceivedDate()));
+            stmt.setTimestamp(8, Timestamp.valueOf(organ.getDonatedDate()));
+            stmt.setTimestamp(9, Timestamp.valueOf(organ.getExpiryDate()));
+            stmt.setTimestamp(10, Timestamp.valueOf(organ.getReceivedDate()));
 
             stmt.executeUpdate();
         }

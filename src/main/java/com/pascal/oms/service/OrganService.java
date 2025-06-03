@@ -2,6 +2,7 @@ package com.pascal.oms.service;
 
 import com.pascal.oms.entities.Organ;
 import com.pascal.oms.repo.OrganRepo;
+import com.pascal.oms.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,8 +27,8 @@ public class OrganService {
         }
 
         try {
-            organ.setCreatedAt(LocalDateTime.now());
-            organ.setUpdatedAt(LocalDateTime.now());
+
+            organ.setOrganId(Utils.UUID());
             organRepo.saveOrgan(organ);
             return true;
         } catch (SQLException e) {
