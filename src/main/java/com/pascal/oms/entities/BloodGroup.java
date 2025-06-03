@@ -29,4 +29,19 @@ public enum BloodGroup {
     public String toString() {
         return value;
     }
+
+    public static BloodGroup fromValue(String value) {
+        for (BloodGroup bg : BloodGroup.values()) {
+            if (bg.value.equals(value)) {
+                return bg;
+            }
+        }
+        throw new IllegalArgumentException("Unknown blood group: " + value);
+    }
+
+    public static void main(String[] args) {
+        System.out.println(BloodGroup.fromValue("A+"));
+    }
 }
+
+

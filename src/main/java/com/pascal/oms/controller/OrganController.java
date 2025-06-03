@@ -35,6 +35,33 @@ public class OrganController {
         return "redirect:/organ/list?success";
     }
 
+    // Save multiple organs for a donor
+    @PostMapping("/saveMultiple")
+    public String saveMultipleOrgansForDonor(@RequestParam String donorId,
+                                             @RequestParam("organNames") List<String> organNames,
+                                             @RequestParam("organTypes") List<String> organTypes,
+                                             @RequestParam("bloodGroups") List<String> bloodGroups) {
+        organService.saveMultipleOrgansForDonor(donorId, organNames, organTypes, bloodGroups);
+        return "redirect:/organ/list?success";
+    }
+
+    // Save multiple organs for a recipient
+    @PostMapping("/saveMultipleForRecipient")
+    public String saveMultipleOrgansForRecipient(@RequestParam String recipientId,
+                                                 @RequestParam("organNames") List<String> organNames,
+                                                 @RequestParam("organTypes") List<String> organTypes,
+                                                 @RequestParam("bloodGroups") List<String> bloodGroups) {
+        organService.saveMultipleOrgansForRecipient(recipientId, organNames, organTypes, bloodGroups);
+        return "redirect:/organ/list?success";
+    }
+
+    // Assign existing organ to recipient
+    @PostMapping("/assign")
+    public String assignOrganToRecipient(@RequestParam String organId, @RequestParam String recipientId) {
+        organService.assignOrganToRecipient(organId, recipientId);
+        return "redirect:/organ/list?success";
+    }
+
     // Show organ list
     @GetMapping("/list")
     public String listOrgans(Model model) {

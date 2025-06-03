@@ -1,14 +1,13 @@
 package com.pascal.oms.repo;
 
+import com.pascal.oms.entities.BloodGroup;
 import com.pascal.oms.entities.Organ;
 import com.pascal.oms.entities.OrganStatus;
 import com.pascal.oms.entities.OrganType;
-import com.pascal.oms.entities.BloodGroup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,25 +22,45 @@ public class OrganRepo {
     }
 
     public void saveOrgan(Organ organ) throws SQLException {
-        String sql = "INSERT INTO organ (organ_id, organ_name, donor_id, recipient_id, organ_type, blood_group, " +
-                "status,donated_date, expiry_date, received_date) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
+        String sql = "INSERT INTO organ (organ_id, organ_name, donor_id, recipient_id, type, blood_group, status, created_at, updated_at, donated_date, expiry_date, received_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = datasource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-
             stmt.setString(1, organ.getOrganId());
             stmt.setString(2, organ.getOrganName());
             stmt.setString(3, organ.getDonorId());
             stmt.setString(4, organ.getRecipientId());
-            stmt.setString(5, organ.getOrganType().name());
-            stmt.setString(6, organ.getBloodGroup().name());
-            stmt.setString(7, organ.getStatus().name());
-            stmt.setTimestamp(8, Timestamp.valueOf(organ.getDonatedDate()));
-            stmt.setTimestamp(9, Timestamp.valueOf(organ.getExpiryDate()));
-            stmt.setTimestamp(10, Timestamp.valueOf(organ.getReceivedDate()));
-
+            stmt.setString(5, organ.getOrganType() != null ? organ.getOrganType().name() : null);
+            stmt.setString(6, organ.getBloodGroup() != null ? organ.getBloodGroup().name() : null);
+            stmt.setString(7, organ.getStatus() != null ? organ.getStatus().name() : null);
+            stmt.setTimestamp(8, organ.getCreatedAt() != null ? Timestamp.valueOf(organ.getCreatedAt()) : new Timestamp(System.currentTimeMillis()));
+            stmt.setTimestamp(9, organ.getUpdatedAt() != null ? Timestamp.valueOf(organ.getUpdatedAt()) : new Timestamp(System.currentTimeMillis()));
+            stmt.setTimestamp(10, organ.getDonatedDate() != null ? Timestamp.valueOf(organ.getDonatedDate()) : null);
+            stmt.setTimestamp(11, organ.getExpiryDate() != null ? Timestamp.valueOf(organ.getExpiryDate()) : null);
+            stmt.setTimestamp(12, organ.getReceivedDate() != null ? Timestamp.valueOf(organ.getReceivedDate()) : null);
             stmt.executeUpdate();
+        }
+    }
+
+    public void saveMultipleOrgans(List<Organ> organs) {
+        String sql = "INSERT INTO organ (organ_id, description, donor_id, recipient_id, type, blood_group, status, donated_date, expiry_date, received_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try (Connection conn = datasource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            for (Organ organ : organs) {
+                stmt.setString(1, organ.getOrganId());
+                stmt.setString(2, organ.getOrganName());
+                stmt.setString(3, organ.getDonorId());
+                stmt.setString(4, organ.getRecipientId());
+                stmt.setString(5, organ.getOrganType().name());
+                stmt.setString(6, organ.getBloodGroup().name());
+                stmt.setString(7, organ.getStatus().name());
+                stmt.setTimestamp(8, organ.getDonatedDate() != null ? java.sql.Timestamp.valueOf(organ.getDonatedDate()) : null);
+                stmt.setTimestamp(9, organ.getExpiryDate() != null ? java.sql.Timestamp.valueOf(organ.getExpiryDate()) : null);
+                stmt.setTimestamp(10, organ.getReceivedDate() != null ? java.sql.Timestamp.valueOf(organ.getReceivedDate()) : null);
+                stmt.addBatch();
+            }
+            stmt.executeBatch();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
@@ -56,10 +75,10 @@ public class OrganRepo {
             while (rs.next()) {
                 Organ organ = new Organ();
                 organ.setOrganId(rs.getString("organ_id"));
-                organ.setOrganName(rs.getString("organ_name"));
+                organ.setOrganName(rs.getString("description"));
                 organ.setDonorId(rs.getString("donor_id"));
                 organ.setRecipientId(rs.getString("recipient_id"));
-                organ.setOrganType(OrganType.valueOf(rs.getString("organ_type")));
+                organ.setOrganType(OrganType.valueOf(rs.getString("type")));
                 organ.setBloodGroup(BloodGroup.valueOf(rs.getString("blood_group")));
                 organ.setStatus(OrganStatus.valueOf(rs.getString("status")));
                 organ.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
@@ -89,10 +108,10 @@ public class OrganRepo {
                 if (rs.next()) {
                     Organ organ = new Organ();
                     organ.setOrganId(rs.getString("organ_id"));
-                    organ.setOrganName(rs.getString("organ_name"));
+                    organ.setOrganName(rs.getString("description"));
                     organ.setDonorId(rs.getString("donor_id"));
                     organ.setRecipientId(rs.getString("recipient_id"));
-                    organ.setOrganType(OrganType.valueOf(rs.getString("organ_type")));
+                    organ.setOrganType(OrganType.valueOf(rs.getString("type")));
                     organ.setBloodGroup(BloodGroup.valueOf(rs.getString("blood_group")));
                     organ.setStatus(OrganStatus.valueOf(rs.getString("status")));
                     organ.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
@@ -113,7 +132,7 @@ public class OrganRepo {
     }
 
     public boolean updateOrgan(Organ organ) throws SQLException {
-        String sql = "UPDATE organ SET organ_name = ?, donor_id = ?, recipient_id = ?, organ_type = ?, " +
+        String sql = "UPDATE organ SET description = ?, donor_id = ?, recipient_id = ?, type = ?, " +
                 "blood_group = ?, status = ?, updated_at = ?, donated_date = ?, expiry_date = ?, received_date = ? " +
                 "WHERE organ_id = ?";
 
@@ -133,6 +152,19 @@ public class OrganRepo {
             stmt.setString(11, organ.getOrganId());
 
             return stmt.executeUpdate() > 0;
+        }
+    }
+
+    public void assignOrganToRecipient(String organId, String recipientId) {
+        String sql = "UPDATE organ SET recipient_id = ?, status = ? WHERE organ_id = ?";
+        try (Connection conn = datasource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, recipientId);
+            stmt.setString(2, com.pascal.oms.entities.OrganStatus.MATCHED.name());
+            stmt.setString(3, organId);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }

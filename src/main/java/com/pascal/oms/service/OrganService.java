@@ -1,6 +1,9 @@
 package com.pascal.oms.service;
 
+import com.pascal.oms.entities.BloodGroup;
 import com.pascal.oms.entities.Organ;
+import com.pascal.oms.entities.OrganStatus;
+import com.pascal.oms.entities.OrganType;
 import com.pascal.oms.repo.OrganRepo;
 import com.pascal.oms.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +61,40 @@ public class OrganService {
 
     public Organ getOrganById(String organId) {
         return organRepo.getOrganById(organId);
+    }
+
+    public void saveMultipleOrgansForDonor(String donorId, List<String> organNames, List<String> organTypes, List<String> bloodGroups) {
+        List<Organ> organs = new java.util.ArrayList<>();
+        for (int i = 0; i < organNames.size(); i++) {
+            Organ organ = new Organ();
+            organ.setOrganId(Utils.UUID());
+            organ.setDonorId(donorId);
+            organ.setOrganName(organNames.get(i));
+            organ.setOrganType(OrganType.valueOf(organTypes.get(i)));
+            organ.setBloodGroup(BloodGroup.valueOf(bloodGroups.get(i)));
+            organ.setStatus(OrganStatus.AVAILABLE);
+            organs.add(organ);
+        }
+        organRepo.saveMultipleOrgans(organs);
+    }
+
+    public void saveMultipleOrgansForRecipient(String recipientId, List<String> organNames, List<String> organTypes, List<String> bloodGroups) {
+        List<Organ> organs = new java.util.ArrayList<>();
+        for (int i = 0; i < organNames.size(); i++) {
+            Organ organ = new Organ();
+            organ.setOrganId(Utils.UUID());
+            organ.setRecipientId(recipientId);
+            organ.setOrganName(organNames.get(i));
+            organ.setOrganType(OrganType.valueOf(organTypes.get(i)));
+            organ.setBloodGroup(BloodGroup.valueOf(bloodGroups.get(i)));
+            organ.setStatus(OrganStatus.MATCHED);
+            organs.add(organ);
+        }
+        organRepo.saveMultipleOrgans(organs);
+    }
+
+    public void assignOrganToRecipient(String organId, String recipientId) {
+        organRepo.assignOrganToRecipient(organId, recipientId);
     }
 
     private boolean isValidOrgan(Organ organ) {

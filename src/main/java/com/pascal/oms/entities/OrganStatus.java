@@ -9,6 +9,7 @@ public enum OrganStatus {
     UNKNOWN("ACTIVE"),
     INACTIVE("UNKNOWN"),
     AVAILABLE("AVAILABLE"),
+    MATCHED("MATCHED"),
     UNAVAILABLE("UNAVAILABLE"),
     ;
 
