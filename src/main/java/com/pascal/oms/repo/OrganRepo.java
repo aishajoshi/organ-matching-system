@@ -42,7 +42,7 @@ public class OrganRepo {
     }
 
     public void saveMultipleOrgans(List<Organ> organs) {
-        String sql = "INSERT INTO organ (organ_id, description, donor_id, recipient_id, type, blood_group, status, donated_date, expiry_date, received_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO organ (organ_id, description, donor_id, recipient_id, type, status, donated_date, received_date) VALUES (?, ?, ?, ?,  ?, ?, ?, ?)";
         try (Connection conn = datasource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             for (Organ organ : organs) {
@@ -51,11 +51,9 @@ public class OrganRepo {
                 stmt.setString(3, organ.getDonorId());
                 stmt.setString(4, organ.getRecipientId());
                 stmt.setString(5, organ.getOrganType().name());
-                stmt.setString(6, organ.getBloodGroup().name());
-                stmt.setString(7, organ.getStatus().name());
-                stmt.setTimestamp(8, organ.getDonatedDate() != null ? java.sql.Timestamp.valueOf(organ.getDonatedDate()) : null);
-                stmt.setTimestamp(9, organ.getExpiryDate() != null ? java.sql.Timestamp.valueOf(organ.getExpiryDate()) : null);
-                stmt.setTimestamp(10, organ.getReceivedDate() != null ? java.sql.Timestamp.valueOf(organ.getReceivedDate()) : null);
+                stmt.setString(6, organ.getStatus().name());
+                stmt.setTimestamp(7, organ.getDonatedDate() != null ? java.sql.Timestamp.valueOf(organ.getDonatedDate()) : null);
+                stmt.setTimestamp(8, organ.getReceivedDate() != null ? java.sql.Timestamp.valueOf(organ.getReceivedDate()) : null);
                 stmt.addBatch();
             }
             stmt.executeBatch();
@@ -79,13 +77,18 @@ public class OrganRepo {
                 organ.setDonorId(rs.getString("donor_id"));
                 organ.setRecipientId(rs.getString("recipient_id"));
                 organ.setOrganType(OrganType.valueOf(rs.getString("type")));
-                organ.setBloodGroup(BloodGroup.valueOf(rs.getString("blood_group")));
                 organ.setStatus(OrganStatus.valueOf(rs.getString("status")));
                 organ.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
                 organ.setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime());
-                organ.setDonatedDate(rs.getTimestamp("donated_date").toLocalDateTime());
-                organ.setExpiryDate(rs.getTimestamp("expiry_date").toLocalDateTime());
-                organ.setReceivedDate(rs.getTimestamp("received_date").toLocalDateTime());
+
+                var expiryDate = rs.getTimestamp("donated_date");
+                if (expiryDate != null) {
+                    organ.setDonatedDate(rs.getTimestamp("donated_date").toLocalDateTime());
+                }
+                var receivedDate = rs.getTimestamp("received_date");
+                if (receivedDate != null) {
+                    organ.setReceivedDate(rs.getTimestamp("received_date").toLocalDateTime());
+                }
 
                 organs.add(organ);
             }

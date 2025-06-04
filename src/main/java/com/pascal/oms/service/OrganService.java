@@ -23,22 +23,22 @@ public class OrganService {
         this.organRepo = organRepo;
     }
 
-    public boolean saveOrgan(Organ organ) {
-        if (!isValidOrgan(organ)) {
-            System.out.println("Invalid organ details.");
-            return false;
-        }
-
-        try {
-
-            organ.setOrganId(Utils.UUID());
-            organRepo.saveOrgan(organ);
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
+//    public boolean saveOrgan(Organ organ) {
+//        if (!isValidOrgan(organ)) {
+//            System.out.println("Invalid organ details.");
+//            return false;
+//        }
+//
+//        try {
+//
+//            organ.setOrganId(Utils.UUID());
+//            organRepo.saveOrgan(organ);
+//            return true;
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            return false;
+//        }
+//    }
 
     public boolean updateOrgan(Organ organ) {
         if (!isValidOrgan(organ)) {
@@ -63,18 +63,17 @@ public class OrganService {
         return organRepo.getOrganById(organId);
     }
 
-    public void saveMultipleOrgansForDonor(String donorId, List<String> organNames, List<String> organTypes, List<String> bloodGroups) {
+
+    public void addDonorOrgan(String donorId, String organName, String organType, String bloodGroup) {
         List<Organ> organs = new java.util.ArrayList<>();
-        for (int i = 0; i < organNames.size(); i++) {
-            Organ organ = new Organ();
-            organ.setOrganId(Utils.UUID());
-            organ.setDonorId(donorId);
-            organ.setOrganName(organNames.get(i));
-            organ.setOrganType(OrganType.valueOf(organTypes.get(i)));
-            organ.setBloodGroup(BloodGroup.valueOf(bloodGroups.get(i)));
-            organ.setStatus(OrganStatus.AVAILABLE);
-            organs.add(organ);
-        }
+        Organ organ = new Organ();
+        organ.setOrganId(Utils.UUID());
+        organ.setDonorId(donorId);
+        organ.setOrganName(organName);
+        organ.setOrganType(OrganType.valueOf(organType));
+        organ.setBloodGroup(BloodGroup.valueOf(bloodGroup));
+        organ.setStatus(OrganStatus.AVAILABLE);
+        organs.add(organ);
         organRepo.saveMultipleOrgans(organs);
     }
 

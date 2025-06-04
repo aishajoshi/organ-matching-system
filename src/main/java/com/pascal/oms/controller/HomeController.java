@@ -15,7 +15,6 @@ public class HomeController {
 
     @GetMapping(value = {"/", "/index", "/home", "/dashboard"})
     public String home(Model model, HttpSession session) {
-        System.out.println("home");
         Session s = Helper.getAuthSession(session);
         Helper.setAuthSession(model, s);
         return "dashboard";
@@ -23,7 +22,6 @@ public class HomeController {
 
     @GetMapping(value = {"/profile"})
     public String profile(Model model, HttpSession session) {
-        System.out.println("home");
         Session s = Helper.getAuthSession(session);
         if (s.isAuthenticated()) {
             return "redirect:/login";

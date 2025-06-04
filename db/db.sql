@@ -18,7 +18,7 @@ create table donor
     name        VARCHAR(100) NOT NULL,
     dob         DATE         NULL,
     age         INT          NOT NULL,
-    blood_group CHAR(5)      NOT NULL,
+    blood_group CHAR(10)      NULL,
     email       VARCHAR(100) NULL,
     phone       VARCHAR(15)  NULL,
     status      VARCHAR(50)  NULL,
@@ -44,7 +44,7 @@ CREATE TABLE recipient
 );
 CREATE TABLE organ
 (
-    organ_id      INT PRIMARY KEY AUTO_INCREMENT,
+    organ_id      VARCHAR(36) PRIMARY KEY,
     type          VARCHAR(50)  NOT NULL,
     description   VARCHAR(100) NULL,
     status        VARCHAR(50)  NULL,

@@ -28,29 +28,37 @@ public class OrganController {
         return "organ";  // organ.html
     }
 
-    // Save a new organ
-    @PostMapping("/save")
-    public String saveOrgan(@ModelAttribute("organ") Organ organ) {
-        organService.saveOrgan(organ);
-        return "redirect:/organ/list?success";
-    }
-
-    // Save multiple organs for a donor
-    @PostMapping("/saveMultiple")
-    public String saveMultipleOrgansForDonor(@RequestParam String donorId,
-                                             @RequestParam("organNames") List<String> organNames,
-                                             @RequestParam("organTypes") List<String> organTypes,
-                                             @RequestParam("bloodGroups") List<String> bloodGroups) {
-        organService.saveMultipleOrgansForDonor(donorId, organNames, organTypes, bloodGroups);
-        return "redirect:/organ/list?success";
+    // Show form to add donor organ
+    @GetMapping("/add-donor-organ")
+    public String showAddDonorOrganForm(Model model) {
+        model.addAttribute("organ", new Organ());
+        return "organ_add_donor";
     }
 
     // Save multiple organs for a recipient
-    @PostMapping("/saveMultipleForRecipient")
-    public String saveMultipleOrgansForRecipient(@RequestParam String recipientId,
-                                                 @RequestParam("organNames") List<String> organNames,
-                                                 @RequestParam("organTypes") List<String> organTypes,
-                                                 @RequestParam("bloodGroups") List<String> bloodGroups) {
+    @PostMapping("/add-donor-organ")
+    public String addOrganOfDonor(@RequestParam("donorId") String donerId,
+                                  @RequestParam("organName") String organName,
+                                  @RequestParam("organType") String organType,
+                                  @RequestParam("bloodGroup") String bloodGroup) {
+        organService.addDonorOrgan(donerId, organName, organType, bloodGroup);
+        return "redirect:/organ/list?success";
+    }
+
+    // Show form to add recipient organ requirement
+    @GetMapping("/add-recipient-organ")
+    public String showAddRecipientOrganForm(Model model) {
+        model.addAttribute("organ", new Organ());
+        return "organ_add_recipient";
+    }
+
+
+    // Save multiple organs for a recipient
+    @PostMapping("/add-recipient-organ")
+    public String addOrganForRecipient(@RequestParam String recipientId,
+                                       @RequestParam("organNames") List<String> organNames,
+                                       @RequestParam("organTypes") List<String> organTypes,
+                                       @RequestParam("bloodGroups") List<String> bloodGroups) {
         organService.saveMultipleOrgansForRecipient(recipientId, organNames, organTypes, bloodGroups);
         return "redirect:/organ/list?success";
     }

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="header :: header-css"></head>
+<body>
+<div th:replace="header :: header"></div>
+<div class="container mt-4">
+    <h2>Assign Organ to Recipient</h2>
+    <form action="/organ/assign" method="post">
+        <div class="mb-3">
+            <label for="organId" class="form-label">Organ ID</label>
+            <input type="text" class="form-control" id="organId" name="organId" required>
+        </div>
+        <div class="mb-3">
+            <label for="recipientId" class="form-label">Recipient ID</label>
+            <input type="text" class="form-control" id="recipientId" name="recipientId" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Assign Organ</button>
+    </form>
+</div>
+</body>
+</html>
+
