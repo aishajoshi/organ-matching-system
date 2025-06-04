@@ -1,50 +1,44 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title th:text="${editMode} ? 'Edit Donor' : 'Register Donor'">Donor Form</title>
-    <link rel="stylesheet" th:href="@{/css/signup.css}"/>
-</head>
+<head th:replace="~{header :: header-css}"></head>
 <body>
-<div class="container">
-    <h2 th:text="${editMode} ? 'Edit Donor' : 'Register as Donor'"></h2>
-    <form th:action="${editMode} ? @{/donor/update} : @{/donor/save}" th:object="${donor}" method="post">
-        <input type="hidden" th:if="${editMode}" th:field="*{donorId}"/>
-        <div>
-            <label for="name">Name:</label>
-            <input type="text" id="name" th:field="*{name}" required/>
+<div th:replace="~{header :: header}"></div>
+<div class="page-container">
+    <div class="container">
+        <div class="container" style="padding-top:2rem;">
+            <h2 th:text="${editMode} ? 'Edit Donor' : 'Register as Donor'"></h2>
+            <form th:action="${editMode} ? @{/donor/update} : @{/donor/save}" th:object="${donor}" method="post">
+                <input type="hidden" th:if="${editMode}" th:field="*{donorId}"/>
+                <div>
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" th:field="*{name}" required/>
+                </div>
+                <div>
+                    <label for="age">Age:</label>
+                    <input type="number" id="age" th:field="*{age}" required min="0"/>
+                </div>
+                <div>
+                    <label for="bloodGroup">Blood Group:</label>
+                    <input type="text" id="bloodGroup" th:field="*{bloodGroup}" required/>
+                </div>
+                <div>
+                    <label for="contact">Contact:</label>
+                    <input type="text" id="contact" th:field="*{contact}" required/>
+                </div>
+                <div>
+                    <button type="submit" th:text="${editMode} ? 'Update' : 'Register'"></button>
+                </div>
+            </form>
+            <div th:if="${param.success}">
+                <p class="success">Registration successful!</p>
+            </div>
+            <div th:if="${param.updated}">
+                <p class="success">Donor updated successfully!</p>
+            </div>
+            <a th:href="@{/donor/list}">Back to Donor List</a>
         </div>
-        <div>
-            <label for="age">Age:</label>
-            <input type="number" id="age" th:field="*{age}" required min="0"/>
-        </div>
-        <div>
-            <label for="bloodGroup">Blood Group:</label>
-            <input type="text" id="bloodGroup" th:field="*{bloodGroup}" required/>
-        </div>
-
-        <div>
-            <label for="contact">Contact:</label>
-            <input type="text" id="contact" th:field="*{contact}" required/>
-        </div>
-<!--        <div>-->
-        <!--            <label for="organs">Organs to Donate:</label>-->
-        <!--            <select id="organs" th:field="*{organs}" multiple required>-->
-        <!--                <option th:each="organ : ${organList}" th:value="${organ}" th:text="${organ.type}"></option>-->
-        <!--            </select>-->
-        <!--            <small>Hold Ctrl (Windows) or Command (Mac) to select multiple organs.</small>-->
-        <!--        </div>-->
-        <div>
-            <button type="submit" th:text="${editMode} ? 'Update' : 'Register'"></button>
-        </div>
-    </form>
-    <div th:if="${param.success}">
-        <p class="success">Registration successful!</p>
     </div>
-    <div th:if="${param.updated}">
-        <p class="success">Donor updated successfully!</p>
-    </div>
-    <a th:href="@{/donor/list}">Back to Donor List</a>
+    <div th:replace="~{footer :: footer}"></div>
 </div>
 </body>
 </html>

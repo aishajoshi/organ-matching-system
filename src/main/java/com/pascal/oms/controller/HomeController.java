@@ -13,7 +13,7 @@ public class HomeController {
     private final ParkingTicketManagementService service = ParkingTicketManagementService.getInstance();
 
 
-    @GetMapping(value = {"/", "/index", "/home"})
+    @GetMapping(value = {"/", "/index", "/home", "/dashboard"})
     public String home(Model model, HttpSession session) {
         System.out.println("home");
         Session s = Helper.getAuthSession(session);

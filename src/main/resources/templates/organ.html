@@ -1,11 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title th:text="${editMode} ? 'Edit Organ' : 'Register Organ'">Organ Form</title>
-    <link rel="stylesheet" th:href="@{/css/signup.css}" />
-</head>
+<head th:replace="~{header :: header-css}"></head>
 <body>
+<div th:replace="~{header :: header}"></div>
 <div class="container">
     <h2 th:text="${editMode} ? 'Edit Organ Details' : 'Register an Organ'"></h2>
 
@@ -215,5 +212,6 @@
 
     <a th:href="@{/organ/list}">Back to Organ List</a>
 </div>
+<div th:replace="~{footer :: footer}"></div>
 </body>
 </html>

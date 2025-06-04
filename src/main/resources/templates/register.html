@@ -1,163 +1,29 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Sign Up - Organ Matching System</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #4f46e5;
-            --primary-hover: #4338ca;
-            --accent: #06b6d4;
-            --light-bg: #f9fafb;
-            --text-dark: #111827;
-            --input-bg: #f3f4f6;
-            --border-color: #d1d5db;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--light-bg);
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding-top: 60px;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .header h1 {
-            color: var(--primary);
-            font-size: 2.8rem;
-            margin: 0;
-        }
-
-        .header p {
-            color: var(--text-dark);
-            font-size: 1.1rem;
-        }
-
-        .signup-container {
-            background: white;
-            width: 100%;
-            max-width: 460px;
-            padding: 2rem 2.5rem;
-            border-radius: 12px;
-            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
-        }
-
-        .signup-container h2 {
-            text-align: center;
-            margin-bottom: 1.5rem;
-            color: var(--text-dark);
-            font-size: 1.6rem;
-        }
-
-        .form-group {
-            margin-bottom: 1.2rem;
-        }
-
-        input[type="text"],
-        input[type="email"],
-        input[type="password"] {
-            width: 100%;
-            padding: 14px 16px;
-            font-size: 1rem;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            background-color: var(--input-bg);
-            transition: border-color 0.3s, background-color 0.3s;
-        }
-
-        input:focus {
-            outline: none;
-            border-color: var(--primary);
-            background-color: white;
-        }
-
-        .signup-btn {
-            width: 100%;
-            background: linear-gradient(to right, var(--primary), var(--accent));
-            color: white;
-            font-size: 1.1rem;
-            padding: 12px 0;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        .signup-btn:hover {
-            background: linear-gradient(to right, var(--primary-hover), var(--accent));
-        }
-
-        .login-link {
-            text-align: center;
-            margin-top: 1rem;
-            font-size: 0.95rem;
-            color: var(--primary);
-        }
-
-        .login-link a {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .login-link a:hover {
-            text-decoration: underline;
-        }
-
-        @media (max-width: 480px) {
-            .signup-container {
-                margin: 0 1rem;
-            }
-        }
-    </style>
-</head>
+<head th:replace="~{header :: header-css}"></head>
 <body>
-
-<div class="header">
-    <h1>OMS</h1>
-    <p>Join us and be a lifesaver through organ donation.</p>
-</div>
-
-<div class="signup-container">
-    <h2>Create Your Account</h2>
-    <form id="signup-form" th:action="@{/register}" th:object="${user}" method="POST">
-        <div class="form-group">
-            <input type="text" id="fullname" name="fullname" th:field="*{fullName}" placeholder="Full Name" required>
+<div th:replace="~{header :: header}"></div>
+<div class="container" style="max-width: 500px; margin-top: 3rem;">
+    <h2 class="mb-4 text-center">Sign Up</h2>
+    <form th:action="@{/register}" th:object="${user}" method="post">
+        <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" class="form-control" id="username" th:field="*{userName}" required>
         </div>
-
-        <div class="form-group">
-            <input type="email" id="email" name="email" th:field="*{email}" placeholder="Email Address" required>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email address</label>
+            <input type="email" class="form-control" id="email" th:field="*{email}" required>
         </div>
-
-        <div class="form-group">
-            <input type="text" id="phone" name="phone" th:field="*{phone}" placeholder="Phone Number" required>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" th:field="*{password}" required>
         </div>
-
-        <div class="form-group">
-            <input type="password" id="password" name="password" th:field="*{password}" placeholder="New Password" required>
-        </div>
-
-        <div class="form-group">
-            <input type="submit" value="Sign Up" class="signup-btn">
-        </div>
+        <button type="submit" class="btn btn-primary w-100">Sign Up</button>
     </form>
-
-    <div class="login-link">
-        Already have an account?
-        <a th:href="@{/login}">Log In</a>
+    <div class="mt-3 text-center">
+        <span>Already have an account? <a th:href="@{/login}">Login</a></span>
     </div>
 </div>
-
+<div th:replace="~{footer :: footer}"></div>
 </body>
 </html>

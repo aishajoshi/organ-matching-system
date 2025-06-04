@@ -1,149 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Dashboard - Organ Matching System</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --primary: #4f46e5;
-      --accent: #06b6d4;
-      --bg: #f9fafb;
-      --text: #1f2937;
-      --light: #ffffff;
-      --border: #e5e7eb;
-    }
-
-    body {
-      margin: 0;
-      font-family: 'Inter', sans-serif;
-      background-color: var(--bg);
-      display: flex;
-      height: 100vh;
-    }
-
-    .sidebar {
-      width: 240px;
-      background-color: var(--primary);
-      color: white;
-      display: flex;
-      flex-direction: column;
-      padding: 1.5rem 1rem;
-    }
-
-    .sidebar h2 {
-      margin-bottom: 2rem;
-      font-size: 1.5rem;
-      text-align: center;
-    }
-
-    .sidebar a {
-      color: white;
-      text-decoration: none;
-      margin: 10px 0;
-      padding: 10px 15px;
-      border-radius: 6px;
-      transition: background 0.3s;
-    }
-
-    .sidebar a:hover {
-      background-color: rgba(255, 255, 255, 0.1);
-    }
-
-    .main {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .topbar {
-      background-color: var(--light);
-      padding: 1rem 2rem;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .topbar h1 {
-      font-size: 1.4rem;
-      color: var(--text);
-    }
-
-    .user-info {
-      font-size: 0.95rem;
-      color: var(--text);
-    }
-
-    .content {
-      padding: 2rem;
-      overflow-y: auto;
-    }
-
-    .card {
-      background-color: var(--light);
-      padding: 1.5rem;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-      margin-bottom: 1.5rem;
-    }
-
-    .card h3 {
-      margin: 0 0 0.75rem;
-      color: var(--text);
-    }
-
-    .card p {
-      margin: 0;
-      color: #4b5563;
-    }
-
-    @media (max-width: 768px) {
-      .sidebar {
-        display: none;
-      }
-
-      .main {
-        width: 100%;
-      }
-    }
-  </style>
-</head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{header :: header-css}"></head>
 <body>
-
-<div class="sidebar">
-  <h2 style="color: white;">OMS</h2>
-  <a href="dashboard.html">Dashboard</a>
-  <a href="/donor/register">Donors</a>
-  <a href="/recipient/register">Recipients</a>
-  <a href="/organ/register">Organs</a>
-  <a href="matches.html">Matches</a>
-  <a href="login.html">Logout</a>
+<div th:replace="~{header :: header}"></div>
+<div class="container-fluid" style="padding-top: 2rem;">
+    <div class="content">
+        <div class="card mb-4">
+            <h3>System Overview</h3>
+            <p>Total Donors: <span>0</span></p>
+            <p>Total Recipients: <span>0</span></p>
+            <p>Available Organs: <span>0</span></p>
+        </div>
+        <div class="card">
+            <h3>Recent Matches</h3>
+            <p>Matching algorithms and recent activity summary go here...</p>
+        </div>
+    </div>
 </div>
-
-<div class="main">
-  <div class="topbar">
-    <h1>Welcome to OMS Dashboard</h1>
-    <div class="user-info">
-      Logged in as <strong>User</strong>
-    </div>
-  </div>
-
-  <div class="content">
-    <div class="card">
-      <h3>System Overview</h3>
-      <p>Total Donors: <span>0</span></p>
-      <p>Total Recipients: <span>0</span></p>
-      <p>Available Organs: <span>0</span></p>
-    </div>
-
-    <div class="card">
-      <h3>Recent Matches</h3>
-      <p>Matching algorithms and recent activity summary go here...</p>
-    </div>
-  </div>
-</div>
-
+<div th:replace="~{footer :: footer}"></div>
 </body>
 </html>

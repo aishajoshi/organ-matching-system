@@ -1,12 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title th:text="${editMode} ? 'Edit Recipient' : 'Register Recipient'">Recipient Form</title>
-    <link rel="stylesheet" th:href="@{/css/signup.css}"/>
-</head>
+<head th:replace="~{header :: header-css}"></head>
 <body>
-<div class="container">
+<div th:replace="~{header :: header}"></div>
+<div class="container" style="padding-top:2rem;">
     <h2 th:text="${editMode} ? 'Edit Recipient' : 'Register as Recipient'"></h2>
     <form th:action="${editMode} ? @{/recipient/update} : @{/recipient/register}" th:object="${recipient}"
           method="post">
@@ -43,5 +40,6 @@
     </div>
     <a th:href="@{/recipient/list}">Back to Recipient List</a>
 </div>
+<div th:replace="~{footer :: footer}"></div>
 </body>
 </html>

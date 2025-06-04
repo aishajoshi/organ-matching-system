@@ -1,11 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Organ List</title>
-    <link rel="stylesheet" th:href="@{/css/list.css}" />
-</head>
+<head th:replace="~{header :: header-css}"></head>
 <body>
+<div th:replace="~{header :: header}"></div>
 <div class="container">
     <h2>Registered Organs</h2>
 
@@ -41,8 +38,9 @@
     </table>
 
     <div style="margin-top: 20px;">
-        <a th:href="@{/organ/form}">Register New Organ</a>
+        <a th:href="@{/organ/register}">Register New Organ</a>
     </div>
 </div>
+<div th:replace="~{footer :: footer}"></div>
 </body>
 </html>

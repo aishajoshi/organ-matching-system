@@ -67,7 +67,7 @@ public class OrganController {
     public String listOrgans(Model model) {
         List<Organ> organList = organService.getAllOrgans();
         model.addAttribute("organs", organList);
-        return "organ-list";  // organ-list.html
+        return "organ_list";  // organ-list.html
     }
 
     // Show edit form
