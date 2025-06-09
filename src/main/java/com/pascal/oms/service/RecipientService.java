@@ -24,6 +24,7 @@ public class RecipientService {
             return null;
         }
 
+        recipient.setStatus("Waiting"); // default status
         try {
             recipientRepo.saveRecipient(recipient);
             return recipient;
@@ -49,7 +50,6 @@ public class RecipientService {
     public List<Recipient> getAllRecipients() {
         return recipientRepo.getAllRecipients();
     }
-
 
     private boolean isValidRecipient(Recipient recipient) {
         return recipient.getName() != null && !recipient.getName().isEmpty()
