@@ -3,38 +3,50 @@
 <head th:replace="~{header :: header-css}"></head>
 <body>
 <div th:replace="~{header :: header}"></div>
-<div class="container" style="padding-top:2rem;">
-    <h2>Donor List</h2>
-    <a href="/donor/register" class="add-btn">Add New Donor</a>
-    <table>
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Age</th>
-            <th>Blood Group</th>
-            <th>Contact</th>
-            <th>Status</th>
-            <th>Action</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="donor : ${donors}">
-            <td th:text="${donor.donorId}"></td>
-            <td th:text="${donor.name}"></td>
-            <td th:text="${donor.age}"></td>
-            <td th:text="${donor.bloodGroup}"></td>
-            <td th:text="${donor.contact}"></td>
-            <td th:text="${donor.status}"></td>
-            <td>
-                <a th:href="@{'/donor/edit/' + ${donor.donorId}}" class="edit-btn">Edit</a>
-            </td>
-        </tr>
-        <tr th:if="${donors == null or #lists.isEmpty(donors)}">
-            <td colspan="7" style="text-align:center;">No donors found.</td>
-        </tr>
-        </tbody>
-    </table>
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Donor List</h4>
+        </div>
+        <div class="card-body">
+            <div class="mb-3 text-end">
+                <a href="/donor/register" class="btn btn-success">Add New Donor</a>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover text-center">
+                    <thead class="table-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Age</th>
+                        <th>Blood Group</th>
+                        <th>Contact</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="donor : ${donors}">
+                        <td th:text="${donor.donorId}"></td>
+                        <td th:text="${donor.name}"></td>
+                        <td th:text="${donor.age}"></td>
+                        <td th:text="${donor.bloodGroup}"></td>
+                        <td th:text="${donor.contact}"></td>
+                        <td th:text="${donor.status}"></td>
+                        <td>
+                            <a th:href="@{'/donor/edit/' + ${donor.donorId}}" class="btn btn-sm btn-outline-primary">Edit</a>
+                        </td>
+                    </tr>
+                    <tr th:if="${donors == null or #lists.isEmpty(donors)}">
+                        <td colspan="7">No donors found.</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
 </div>
 <div th:replace="~{footer :: footer}"></div>
 </body>

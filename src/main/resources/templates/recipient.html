@@ -1,45 +1,66 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{header :: header-css}"></head>
 <body>
 <div th:replace="~{header :: header}"></div>
-<div class="container" style="padding-top:2rem;">
-    <h2 th:text="${editMode} ? 'Edit Recipient' : 'Register as Recipient'"></h2>
-    <form th:action="${editMode} ? @{/recipient/update} : @{/recipient/register}" th:object="${recipient}"
-          method="post">
-        <input type="hidden" th:if="${editMode}" th:field="*{recipientId}"/>
-        <div>
-            <label for="name">Name:</label>
-            <input type="text" id="name" th:field="*{name}" required/>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4 th:text="${editMode} ? 'Edit Recipient' : 'Register as Recipient'" class="mb-0"></h4>
+                </div>
+                <div class="card-body">
+                    <form th:action="${editMode} ? @{/recipient/update} : @{/recipient/register}"
+                          th:object="${recipient}" method="post">
+
+                        <input type="hidden" th:if="${editMode}" th:field="*{recipientId}" />
+
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Name:</label>
+                            <input type="text" id="name" class="form-control" th:field="*{name}" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="age" class="form-label">Age:</label>
+                            <input type="number" id="age" class="form-control" th:field="*{age}" min="0" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="bloodGroup" class="form-label">Blood Group:</label>
+                            <input type="text" id="bloodGroup" class="form-control" th:field="*{bloodGroup}" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Phone:</label>
+                            <input type="text" id="phone" class="form-control" th:field="*{phone}" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email:</label>
+                            <input type="email" id="email" class="form-control" th:field="*{email}" required />
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <button type="submit" class="btn btn-success"
+                                    th:text="${editMode} ? 'Update' : 'Register'"></button>
+                            <a th:href="@{/recipient/list}" class="btn btn-secondary">Back to List</a>
+                        </div>
+                    </form>
+
+                    <div th:if="${param.success}" class="alert alert-success mt-3" role="alert">
+                        Registration successful!
+                    </div>
+                    <div th:if="${param.updated}" class="alert alert-success mt-3" role="alert">
+                        Recipient updated successfully!
+                    </div>
+                </div>
+            </div>
         </div>
-        <div>
-            <label for="age">Age:</label>
-            <input type="number" id="age" th:field="*{age}" required min="0"/>
-        </div>
-        <div>
-            <label for="bloodGroup">Blood Group:</label>
-            <input type="text" id="bloodGroup" th:field="*{bloodGroup}" required/>
-        </div>
-        <div>
-            <label for="phone">Phone:</label>
-            <input type="text" id="phone" th:field="*{phone}" required/>
-        </div>
-        <div>
-            <label for="email">Email:</label>
-            <input type="email" id="email" th:field="*{email}" required/>
-        </div>
-        <div>
-            <button type="submit" th:text="${editMode} ? 'Update' : 'Register'"></button>
-        </div>
-    </form>
-    <div th:if="${param.success}">
-        <p class="success">Registration successful!</p>
     </div>
-    <div th:if="${param.updated}">
-        <p class="success">Recipient updated successfully!</p>
-    </div>
-    <a th:href="@{/recipient/list}">Back to Recipient List</a>
 </div>
+
 <div th:replace="~{footer :: footer}"></div>
 </body>
 </html>
