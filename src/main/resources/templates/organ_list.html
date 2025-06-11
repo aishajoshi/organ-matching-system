@@ -3,7 +3,8 @@
 <head th:replace="~{header :: header-css}"></head>
 <body>
 <div th:replace="~{header :: header}"></div>
-<div class="container">
+
+<div class="container mt-4">
     <div class="mb-3">
         <div class="btn-group" role="group" aria-label="Organ Actions">
             <a class="btn btn-outline-primary" th:href="@{/organ/list}">Organ List</a>
@@ -12,9 +13,10 @@
             <a class="btn btn-outline-warning" th:href="@{/organ/assign}">Assign Organ to Recipient</a>
         </div>
     </div>
+
     <h2>Registered Organs</h2>
 
-    <table>
+    <table class="table table-striped">
         <thead>
         <tr>
             <th>Organ ID</th>
@@ -31,10 +33,11 @@
         <tr th:each="organ : ${organs}">
             <td th:text="${organ.organId}">ORG123</td>
             <td th:text="${organ.organName}">Liver</td>
+            <td th:text="${organ.organType}">LIVER</td> <!-- ✅ FIXED -->
             <td th:text="${organ.bloodGroup}">A+</td>
             <td th:text="${organ.status}">AVAILABLE</td>
             <td th:text="${organ.donorId}">DONOR001</td>
-            <td th:text="${organ.recipientId} ?: 'Not Assigned'">Not Assigned</td>
+            <td th:text="${organ.recipientId != null ? organ.recipientId : 'Not Assigned'}">Not Assigned</td>
             <td>
                 <a th:href="@{/organ/edit/{id}(id=${organ.organId})}">Edit</a> |
                 <a th:href="@{/organ/delete/{id}(id=${organ.organId})}"
@@ -44,6 +47,7 @@
         </tbody>
     </table>
 </div>
+
 <div th:replace="~{footer :: footer}"></div>
 </body>
 </html>
