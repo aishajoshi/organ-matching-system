@@ -6,13 +6,20 @@
 <div class="container">
     <h2 th:text="${editMode} ? 'Edit Organ Details' : 'Register an Organ'"></h2>
 
+    <!-- Register/Edit a Single Organ -->
     <form th:action="${editMode} ? @{/organ/update} : @{/organ/save}" th:object="${organ}" method="post">
         <input type="hidden" th:if="${editMode}" th:field="*{organId}" />
 
-        <!-- Donor ID input -->
+        <!-- Donor ID -->
         <div>
             <label for="donorId">Donor ID:</label>
             <input type="text" id="donorId" th:field="*{donorId}" placeholder="Enter Donor ID" required />
+        </div>
+
+        <!-- Recipient ID (optional, only if you're using recipient in this form) -->
+        <div>
+            <label for="recipientId">Recipient ID (optional):</label>
+            <input type="text" id="recipientId" th:field="*{recipientId}" placeholder="Enter Recipient ID" />
         </div>
 
         <!-- Organ Name -->
@@ -21,7 +28,7 @@
             <input type="text" id="organName" th:field="*{organName}" required />
         </div>
 
-        <!-- Organ Type (Only Kidney, Liver, Heart) -->
+        <!-- Organ Type -->
         <div>
             <label for="organType">Organ Type:</label>
             <select id="organType" th:field="*{organType}" required>
@@ -38,7 +45,7 @@
             <select id="bloodGroup" th:field="*{bloodGroup}" required>
                 <option value="">--Select Blood Group--</option>
                 <option th:value="A_POSITIVE">A+</option>
-                <option th:value="A-">A-</option>
+                <option th:value="A_NEGATIVE">A-</option>
                 <option th:value="B_POS">B+</option>
                 <option th:value="B_NEG">B-</option>
                 <option th:value="AB_POS">AB+</option>
@@ -48,7 +55,7 @@
             </select>
         </div>
 
-        <!-- Organ Status -->
+        <!-- Status -->
         <div>
             <label for="status">Organ Status:</label>
             <select id="status" th:field="*{status}" required>
@@ -59,13 +66,12 @@
             </select>
         </div>
 
-        <!-- Submit -->
         <div>
             <button type="submit" th:text="${editMode} ? 'Update Organ' : 'Register Organ'"></button>
         </div>
     </form>
 
-    <!-- Add Multiple Organs for Donor -->
+    <!-- Register Multiple Organs for Donor -->
     <div style="margin-top:2rem;">
         <h3>Add Multiple Organs for a Donor</h3>
         <form th:action="@{/organ/saveMultiple}" method="post">
@@ -85,7 +91,7 @@
                     <select name="bloodGroups" required>
                         <option value="">--Blood Group--</option>
                         <option value="A_POSITIVE">A+</option>
-                        <option value="A-">A-</option>
+                        <option value="A_NEGATIVE">A-</option>
                         <option value="B_POS">B+</option>
                         <option value="B_NEG">B-</option>
                         <option value="AB_POS">AB+</option>
@@ -100,7 +106,7 @@
         </form>
     </div>
 
-    <!-- Assign Existing Organ to Recipient -->
+    <!-- Assign Organ to Recipient -->
     <div style="margin-top:2rem;">
         <h3>Assign Existing Organ to Recipient</h3>
         <form th:action="@{/organ/assign}" method="post">
@@ -116,7 +122,7 @@
         </form>
     </div>
 
-    <!-- Add Multiple Organs for Recipient -->
+    <!-- Register Multiple Organs for Recipient -->
     <div style="margin-top:2rem;">
         <h3>Add Multiple Organs for a Recipient</h3>
         <form th:action="@{/organ/saveMultipleForRecipient}" method="post">
@@ -136,7 +142,7 @@
                     <select name="bloodGroups" required>
                         <option value="">--Blood Group--</option>
                         <option value="A_POSITIVE">A+</option>
-                        <option value="A-">A-</option>
+                        <option value="A_NEGATIVE">A-</option>
                         <option value="B_POS">B+</option>
                         <option value="B_NEG">B-</option>
                         <option value="AB_POS">AB+</option>
@@ -151,12 +157,14 @@
         </form>
     </div>
 
+    <!-- JS to dynamically add fields -->
     <script>
         function addOrganEntry() {
             const container = document.getElementById('organsContainer');
             const entry = document.createElement('div');
             entry.className = 'organ-entry';
-            entry.innerHTML = `<input type="text" name="organNames" placeholder="Organ Name" required />
+            entry.innerHTML = `
+                <input type="text" name="organNames" placeholder="Organ Name" required />
                 <select name="organTypes" required>
                     <option value="">--Type--</option>
                     <option value="KIDNEY">Kidney</option>
@@ -166,8 +174,8 @@
                 <select name="bloodGroups" required>
                     <option value="">--Blood Group--</option>
                     <option value="A_POSITIVE">A+</option>
-                    <option value="A-">A-</option>
-                    <option value="B+">B+</option>
+                    <option value="A_NEGATIVE">A-</option>
+                    <option value="B_POS">B+</option>
                     <option value="B_NEG">B-</option>
                     <option value="AB_POS">AB+</option>
                     <option value="AB_NEG">AB-</option>
@@ -176,11 +184,13 @@
                 </select>`;
             container.appendChild(entry);
         }
+
         function addRecipientOrganEntry() {
             const container = document.getElementById('recipientOrgansContainer');
             const entry = document.createElement('div');
             entry.className = 'organ-entry';
-            entry.innerHTML = `<input type="text" name="organNames" placeholder="Organ Name" required />
+            entry.innerHTML = `
+                <input type="text" name="organNames" placeholder="Organ Name" required />
                 <select name="organTypes" required>
                     <option value="">--Type--</option>
                     <option value="KIDNEY">Kidney</option>
@@ -190,7 +200,7 @@
                 <select name="bloodGroups" required>
                     <option value="">--Blood Group--</option>
                     <option value="A_POSITIVE">A+</option>
-                    <option value="A-">A-</option>
+                    <option value="A_NEGATIVE">A-</option>
                     <option value="B_POS">B+</option>
                     <option value="B_NEG">B-</option>
                     <option value="AB_POS">AB+</option>
@@ -202,7 +212,7 @@
         }
     </script>
 
-    <!-- Messages -->
+    <!-- Feedback messages -->
     <div th:if="${param.success}">
         <p class="success">Organ registered successfully!</p>
     </div>

@@ -31,14 +31,13 @@
         <tr th:each="organ : ${organs}">
             <td th:text="${organ.organId}">ORG123</td>
             <td th:text="${organ.organName}">Liver</td>
-            <td th:text="${organ.organType}">LIVER</td>
             <td th:text="${organ.bloodGroup}">A+</td>
             <td th:text="${organ.status}">AVAILABLE</td>
             <td th:text="${organ.donorId}">DONOR001</td>
-            <td th:text="${organ.recipientId} ?: 'Not Assigned'">RECIPIENT123</td>
+            <td th:text="${organ.recipientId} ?: 'Not Assigned'">Not Assigned</td>
             <td>
-                <a th:href="@{'/organ/edit/' + ${organ.organId}}">Edit</a> |
-                <a th:href="@{'/organ/delete/' + ${organ.organId}}"
+                <a th:href="@{/organ/edit/{id}(id=${organ.organId})}">Edit</a> |
+                <a th:href="@{/organ/delete/{id}(id=${organ.organId})}"
                    onclick="return confirm('Are you sure you want to delete this organ?')">Delete</a>
             </td>
         </tr>

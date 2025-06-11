@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-public class OrganService {
+public class  OrganService {
 
     private final OrganRepo organRepo;
 

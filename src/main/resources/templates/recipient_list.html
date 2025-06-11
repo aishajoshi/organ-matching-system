@@ -18,7 +18,8 @@
                 <th>Name</th>
                 <th>Age</th>
                 <th>Blood Group</th>
-                <th>Contact</th>
+                <th>Phone</th>
+                <th>Email</th>
                 <th>Status</th>
                 <th>Action</th>
             </tr>
@@ -29,14 +30,15 @@
                 <td th:text="${recipient.name}"></td>
                 <td th:text="${recipient.age}"></td>
                 <td th:text="${recipient.bloodGroup}"></td>
-                <td th:text="${recipient.contact}"></td>
+                <td th:text="${recipient.phone}"></td>
+                <td th:text="${recipient.email}"></td>
                 <td th:text="${recipient.status}"></td>
                 <td class="text-center">
                     <a th:href="@{'/recipient/edit/' + ${recipient.recipientId}}" class="btn btn-sm btn-warning">Edit</a>
                 </td>
             </tr>
             <tr th:if="${recipients == null or #lists.isEmpty(recipients)}">
-                <td colspan="7" class="text-center text-muted">No recipients found.</td>
+                <td colspan="8" class="text-center text-muted">No recipients found.</td>
             </tr>
             </tbody>
         </table>

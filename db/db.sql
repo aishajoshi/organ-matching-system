@@ -32,7 +32,7 @@ CREATE TABLE recipient
     name           VARCHAR(100) NOT NULL,
     dob            DATE         NULL,
     age            INT          NOT NULL,
-    blood_group    CHAR(5)      NOT NULL,
+    blood_group    CHAR(10)      NOT NULL,
     required_organ VARCHAR(50)  NULL,
     email          VARCHAR(100) NULL,
     phone          VARCHAR(15)  NULL,
