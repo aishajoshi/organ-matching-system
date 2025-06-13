@@ -9,10 +9,10 @@
         <div class="col-md-6">
             <div class="card shadow-sm">
                 <div class="card-header bg-primary text-white">
-                    <h4 class="mb-0">Register as Donor</h4>
+                    <h4 class="mb-0" th:text="${editMode} ? 'Edit Donor' : 'Register as Donor'"></h4>
                 </div>
                 <div class="card-body">
-                    <form th:action="@{/donor/register}" method="post" th:object="${donor}">
+                    <form th:action="@{${editMode} ? '/donor/update' : '/donor/save'}" method="post" th:object="${donor}">
                         <div class="mb-3">
                             <label for="name" class="form-label">Name:</label>
                             <input type="text" th:field="*{name}" class="form-control" id="name" required>
@@ -25,16 +25,26 @@
 
                         <div class="mb-3">
                             <label for="bloodGroup" class="form-label">Blood Group:</label>
-                            <input type="text" th:field="*{bloodGroup}" class="form-control" id="bloodGroup" required>
+                            <select th:field="*{bloodGroup}" class="form-select" id="bloodGroup" required>
+                                <option value="" disabled selected>Select Blood Group</option>
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+                                <option value="O+">O+</option>
+                                <option value="O-">O-</option>
+                            </select>
                         </div>
 
                         <div class="mb-3">
-                            <label for="contact" class="form-label">Contact:</label>
+                            <label for="contact" class="form-label">Phone:</label>
                             <input type="text" th:field="*{contact}" class="form-control" id="contact" required>
                         </div>
 
                         <div class="d-grid">
-                            <button type="submit" class="btn btn-success">Register</button>
+                            <button type="submit" class="btn btn-success" th:text="${editMode} ? 'Update' : 'Register'"></button>
                         </div>
                     </form>
                 </div>

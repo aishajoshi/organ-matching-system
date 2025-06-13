@@ -20,7 +20,7 @@
                         <th>Name</th>
                         <th>Age</th>
                         <th>Blood Group</th>
-                        <th>Contact</th>
+                        <th>Phone</th> <!-- changed here -->
                         <th>Status</th>
                         <th>Action</th>
                     </tr>
@@ -31,7 +31,7 @@
                         <td th:text="${donor.name}"></td>
                         <td th:text="${donor.age}"></td>
                         <td th:text="${donor.bloodGroup}"></td>
-                        <td th:text="${donor.contact}"></td>
+                        <td th:text="${donor.contact}"></td> <!-- changed label only -->
                         <td th:text="${donor.status}"></td>
                         <td>
                             <a th:href="@{'/donor/edit/' + ${donor.donorId}}" class="btn btn-sm btn-outline-primary">Edit</a>
@@ -51,4 +51,3 @@
 <div th:replace="~{footer :: footer}"></div>
 </body>
 </html>
-
