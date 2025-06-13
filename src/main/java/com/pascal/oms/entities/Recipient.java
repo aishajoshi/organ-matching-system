@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Recipient {
 
-    private String recipientId;
+    private String recipientId; // Changed to String for custom ID
     private String name;
     private int age;
     private String bloodGroup;
@@ -12,14 +12,11 @@ public class Recipient {
     private String email;
     private String status;
     private List<Organ> organs;
-
     private int urgencyLevel;
+    private float meldScore;
+    private int waitingTime;
 
-    private float meldScore;      // For liver recipients
-    private int waitingTime;    // In days (for kidney & heart)
-
-    public Recipient() {
-    }
+    public Recipient() {}
 
     public String getRecipientId() {
         return recipientId;
@@ -107,22 +104,5 @@ public class Recipient {
 
     public void setWaitingTime(int waitingTime) {
         this.waitingTime = waitingTime;
-    }
-
-    @Override
-    public String toString() {
-        return "Recipient{" +
-                "recipientId='" + recipientId + '\'' +
-                ", name='" + name + '\'' +
-                ", age=" + age +
-                ", bloodGroup='" + bloodGroup + '\'' +
-                ", phone='" + phone + '\'' +
-                ", email='" + email + '\'' +
-                ", status='" + status + '\'' +
-                ", organs=" + organs +
-                ", urgencyLevel=" + urgencyLevel +
-                ", meldScore=" + meldScore +
-                ", waitingTime=" + waitingTime +
-                '}';
     }
 }

@@ -20,7 +20,6 @@ public class RecipientController {
         this.recipientService = recipientService;
     }
 
-    // Show recipient registration form
     @GetMapping("/register")
     public String showRegistrationForm(Model model, @RequestParam(required = false) String success,
                                        @RequestParam(required = false) String updated) {
@@ -30,7 +29,6 @@ public class RecipientController {
         return "recipient"; // recipient.html
     }
 
-    // Handle form submission
     @PostMapping("/register")
     public String registerRecipient(@ModelAttribute("recipient") Recipient recipient, Model model) {
         Recipient savedRecipient = recipientService.registerRecipient(recipient);
@@ -42,7 +40,6 @@ public class RecipientController {
         }
     }
 
-    // List all recipients
     @GetMapping("/list")
     public String listRecipients(Model model) {
         List<Recipient> recipients = recipientService.getAllRecipients();
@@ -50,9 +47,9 @@ public class RecipientController {
         return "recipient_list"; // recipient_list.html
     }
 
-    // Show edit form
+    // ✅ FIX: Change Integer to String here
     @GetMapping("/edit/{recipientId}")
-    public String showEditForm(@PathVariable Integer recipientId, Model model) {
+    public String showEditForm(@PathVariable String recipientId, Model model) {
         Recipient recipient = recipientService.getAllRecipients().stream()
                 .filter(r -> recipientId.equals(r.getRecipientId()))
                 .findFirst().orElse(null);
@@ -64,7 +61,6 @@ public class RecipientController {
         return "recipient"; // recipient.html
     }
 
-    // Handle update
     @PostMapping("/update")
     public String updateRecipient(@ModelAttribute("recipient") Recipient recipient) {
         recipientService.updateRecipient(recipient);

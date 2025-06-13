@@ -30,16 +30,18 @@ CREATE TABLE recipient
 (
     recipient_id   VARCHAR(36) PRIMARY KEY,
     name           VARCHAR(100) NOT NULL,
-    dob            DATE         NULL,
-    age            INT          NOT NULL,
-    blood_group    CHAR(10)      NOT NULL,
-    required_organ VARCHAR(50)  NULL,
+    dob            DATE NULL,
+    age            INT NOT NULL,
+    blood_group    CHAR(10) NOT NULL,
+    required_organ VARCHAR(50) NULL,
     email          VARCHAR(100) NULL,
-    phone          VARCHAR(15)  NULL,
-    urgency_level  VARCHAR(50)  NULL,
-    status         VARCHAR(50)  NULL,
+    phone          VARCHAR(15) NULL,
+    urgency_level  VARCHAR(50) NULL,
+    status         VARCHAR(50) NULL,
     created_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
 
 );
 CREATE TABLE organ
