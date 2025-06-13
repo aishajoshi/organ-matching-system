@@ -28,7 +28,7 @@ create table donor
 );
 CREATE TABLE recipient
 (
-    recipient_id   INT PRIMARY KEY AUTO_INCREMENT,
+    recipient_id   VARCHAR(36) PRIMARY KEY,
     name           VARCHAR(100) NOT NULL,
     dob            DATE         NULL,
     age            INT          NOT NULL,

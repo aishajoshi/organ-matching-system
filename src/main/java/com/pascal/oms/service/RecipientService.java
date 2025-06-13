@@ -18,13 +18,16 @@ public class RecipientService {
         this.recipientRepo = recipientRepo;
     }
 
+    // Register recipient with generated unique ID
     public Recipient registerRecipient(Recipient recipient) {
         if (!isValidRecipient(recipient)) {
             System.out.println("Invalid recipient details.");
             return null;
         }
 
+        recipient.setRecipientId(generateNewRecipientId()); // Generate unique recipientId
         recipient.setStatus("Waiting"); // default status
+
         try {
             recipientRepo.saveRecipient(recipient);
             return recipient;
@@ -32,6 +35,17 @@ public class RecipientService {
             e.printStackTrace();
             return null;
         }
+    }
+
+    // Generate new unique recipient ID like REC001, REC002, etc.
+    public String generateNewRecipientId() {
+        String lastId = recipientRepo.findLastRecipientId();
+        if (lastId == null) {
+            return "REC001"; // No records yet
+        }
+        int lastNum = Integer.parseInt(lastId.substring(3)); // Extract number after "REC"
+        int newNum = lastNum + 1;
+        return String.format("REC%03d", newNum); // Format with leading zeros
     }
 
     public boolean updateRecipient(Recipient recipient) {

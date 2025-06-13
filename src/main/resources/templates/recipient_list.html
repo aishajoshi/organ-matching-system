@@ -5,43 +5,49 @@
 <div th:replace="~{header :: header}"></div>
 
 <div class="container mt-5">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2 class="mb-0">Recipient List</h2>
-        <a href="/recipient/register" class="btn btn-primary">Add New Recipient</a>
-    </div>
-
-    <div class="table-responsive shadow-sm">
-        <table class="table table-striped table-hover table-bordered align-middle">
-            <thead class="table-primary text-center">
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Age</th>
-                <th>Blood Group</th>
-                <th>Phone</th>
-                <th>Email</th>
-                <th>Status</th>
-                <th>Action</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="recipient : ${recipients}">
-                <td th:text="${recipient.recipientId}"></td>
-                <td th:text="${recipient.name}"></td>
-                <td th:text="${recipient.age}"></td>
-                <td th:text="${recipient.bloodGroup}"></td>
-                <td th:text="${recipient.phone}"></td>
-                <td th:text="${recipient.email}"></td>
-                <td th:text="${recipient.status}"></td>
-                <td class="text-center">
-                    <a th:href="@{'/recipient/edit/' + ${recipient.recipientId}}" class="btn btn-sm btn-warning">Edit</a>
-                </td>
-            </tr>
-            <tr th:if="${recipients == null or #lists.isEmpty(recipients)}">
-                <td colspan="8" class="text-center text-muted">No recipients found.</td>
-            </tr>
-            </tbody>
-        </table>
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Recipient List</h4>
+        </div>
+        <div class="card-body">
+            <div class="mb-3 text-end">
+                <a href="/recipient/register" class="btn btn-success">Add New Recipient</a>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover text-center">
+                    <thead class="table-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Age</th>
+                        <th>Blood Group</th>
+                        <th>Phone</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="recipient : ${recipients}">
+                        <td th:text="${recipient.recipientId}"></td>
+                        <td th:text="${recipient.name}"></td>
+                        <td th:text="${recipient.age}"></td>
+                        <!-- Highlight invalid blood groups in red -->
+                        <td th:text="${recipient.bloodGroup}"
+                            th:classappend="${recipient.bloodGroup.matches('^(A|B|AB|O)[+-]$') ? '' : 'text-danger fw-bold'}">
+                        </td>
+                        <td th:text="${recipient.phone}"></td>
+                        <td th:text="${recipient.status}"></td>
+                        <td>
+                            <a th:href="@{'/recipient/edit/' + ${recipient.recipientId}}" class="btn btn-sm btn-outline-primary">Edit</a>
+                        </td>
+                    </tr>
+                    <tr th:if="${recipients == null or #lists.isEmpty(recipients)}">
+                        <td colspan="7">No recipients found.</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 

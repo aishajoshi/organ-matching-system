@@ -22,9 +22,12 @@ public class RecipientController {
 
     // Show recipient registration form
     @GetMapping("/register")
-    public String showRegistrationForm(Model model) {
+    public String showRegistrationForm(Model model, @RequestParam(required = false) String success,
+                                       @RequestParam(required = false) String updated) {
         model.addAttribute("recipient", new Recipient());
-        return "recipient"; // Should be recipient.html
+        model.addAttribute("success", success);
+        model.addAttribute("updated", updated);
+        return "recipient"; // recipient.html
     }
 
     // Handle form submission
@@ -32,7 +35,7 @@ public class RecipientController {
     public String registerRecipient(@ModelAttribute("recipient") Recipient recipient, Model model) {
         Recipient savedRecipient = recipientService.registerRecipient(recipient);
         if (savedRecipient != null) {
-            return "redirect:/recipient/list";
+            return "redirect:/recipient/register?success";
         } else {
             model.addAttribute("error", "Failed to register recipient.");
             return "recipient";
@@ -44,7 +47,7 @@ public class RecipientController {
     public String listRecipients(Model model) {
         List<Recipient> recipients = recipientService.getAllRecipients();
         model.addAttribute("recipients", recipients);
-        return "recipient_list"; // Should be recipient_list.html
+        return "recipient_list"; // recipient_list.html
     }
 
     // Show edit form
@@ -58,13 +61,13 @@ public class RecipientController {
         }
         model.addAttribute("recipient", recipient);
         model.addAttribute("editMode", true);
-        return "recipient"; // Should be recipient.html
+        return "recipient"; // recipient.html
     }
 
     // Handle update
     @PostMapping("/update")
     public String updateRecipient(@ModelAttribute("recipient") Recipient recipient) {
         recipientService.updateRecipient(recipient);
-        return "redirect:/recipient/list?updated";
+        return "redirect:/recipient/register?updated";
     }
 }
