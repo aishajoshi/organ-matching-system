@@ -12,21 +12,15 @@
                     <h4 class="mb-0" th:text="${editMode} ? 'Edit Donor' : 'Register as Donor'"></h4>
                 </div>
                 <div class="card-body">
-                    <form th:action="@{${editMode} ? '/donor/update' : '/donor/save'}" method="post" th:object="${donor}">
+                    <form th:action="${editMode} ? @{/donor/update} : @{/donor/save}" method="post" th:object="${donor}">
                         <div class="mb-3">
                             <label for="name" class="form-label">Name:</label>
-                            <input type="text" th:field="*{name}" class="form-control" id="name" required>
-                            <!-- Success message -->
-                            <div th:if="${param.success}" class="alert alert-success alert-dismissible fade show" role="alert">
-                                Donor registered successfully!
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-
+                            <input type="text" th:field="*{name}" class="form-control" id="name" required />
                         </div>
 
                         <div class="mb-3">
                             <label for="age" class="form-label">Age:</label>
-                            <input type="number" th:field="*{age}" class="form-control" id="age" min="1" required>
+                            <input type="number" th:field="*{age}" class="form-control" id="age" min="1" required />
                         </div>
 
                         <div class="mb-3">
@@ -46,11 +40,17 @@
 
                         <div class="mb-3">
                             <label for="contact" class="form-label">Phone:</label>
-                            <input type="text" th:field="*{contact}" class="form-control" id="contact" required>
+                            <input type="text" th:field="*{contact}" class="form-control" id="contact" required />
                         </div>
 
                         <div class="d-grid">
                             <button type="submit" class="btn btn-success" th:text="${editMode} ? 'Update' : 'Register'"></button>
+                        </div>
+
+                        <!-- Success message -->
+                        <div th:if="${param.success}" class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+                            Donor registered successfully!
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     </form>
                 </div>

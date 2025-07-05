@@ -43,7 +43,7 @@ CREATE TABLE recipient
 );
 
 
-);
+
 CREATE TABLE organ
 (
     organ_id      VARCHAR(36) PRIMARY KEY,

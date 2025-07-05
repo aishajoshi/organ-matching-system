@@ -13,7 +13,7 @@
                     <a th:href="@{/recipient/list}" class="btn btn-light btn-sm">Recipient List</a>
                 </div>
                 <div class="card-body">
-                    <form th:action="${editMode} ? @{/recipient/update} : @{/recipient/register}"
+                    <form th:action="${editMode} ? '@{/recipient/update}' : '@{/recipient/register}'"
                           method="post" th:object="${recipient}">
 
                         <input type="hidden" th:if="${editMode}" th:field="*{recipientId}" />
@@ -66,7 +66,7 @@
                         Recipient updated successfully!
                     </div>
 
-                    <!-- Error message if present -->
+                    <!-- Error message -->
                     <div th:if="${error}" class="alert alert-danger mt-3" role="alert" th:text="${error}"></div>
                 </div>
             </div>
