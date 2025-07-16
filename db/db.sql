@@ -56,6 +56,8 @@ CREATE TABLE organ
     received_date TIMESTAMP    NULL,
     created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (donor_id) REFERENCES donor (donor_id)
+    FOREIGN KEY (donor_id) REFERENCES donor (donor_id),
+    FOREIGN KEY (recipient_id) REFERENCES recipient (recipient_id)
 );
+
 

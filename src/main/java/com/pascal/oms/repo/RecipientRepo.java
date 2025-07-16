@@ -4,7 +4,7 @@ import com.pascal.oms.entities.Recipient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import javax.sql.DataSource;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,10 +12,10 @@ import java.util.List;
 @Repository
 public class RecipientRepo {
 
-    private final DataSource dataSource;
+    private final Datasource dataSource;
 
     @Autowired
-    public RecipientRepo(DataSource dataSource) {
+    public RecipientRepo(Datasource dataSource) {
         this.dataSource = dataSource;
     }
 
@@ -34,7 +34,11 @@ public class RecipientRepo {
             stmt.setString(5, recipient.getPhone());
             stmt.setString(6, recipient.getEmail());
             stmt.setString(7, recipient.getStatus());
+
+            // urgency_level was VARCHAR in your SQL, but here you use int. You may want to fix this inconsistency.
+            // Assuming urgency_level is an int in your entity:
             stmt.setInt(8, recipient.getUrgencyLevel());
+
             stmt.setFloat(9, recipient.getMeldScore());
             stmt.setInt(10, recipient.getWaitingTime());
 
@@ -60,9 +64,13 @@ public class RecipientRepo {
                 recipient.setPhone(rs.getString("phone"));
                 recipient.setEmail(rs.getString("email"));
                 recipient.setStatus(rs.getString("status"));
+
+                // Again, urgency_level inconsistency:
                 recipient.setUrgencyLevel(rs.getInt("urgency_level"));
+
                 recipient.setMeldScore(rs.getFloat("meld_score"));
                 recipient.setWaitingTime(rs.getInt("waiting_time"));
+
                 recipients.add(recipient);
             }
 
@@ -87,7 +95,9 @@ public class RecipientRepo {
             stmt.setString(4, recipient.getPhone());
             stmt.setString(5, recipient.getEmail());
             stmt.setString(6, recipient.getStatus());
+
             stmt.setInt(7, recipient.getUrgencyLevel());
+
             stmt.setFloat(8, recipient.getMeldScore());
             stmt.setInt(9, recipient.getWaitingTime());
             stmt.setString(10, recipient.getRecipientId());
