@@ -77,4 +77,38 @@ public class OrganMatchRepo {
         }
         return matches;
     }
+
+    public OrganMatch getOrganMatchById(String matchId) {
+        String sql = "SELECT * FROM organ_match WHERE match_id = ?";
+        try (Connection conn = datasource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, matchId);
+            try (java.sql.ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    OrganMatch match = new OrganMatch();
+                    match.setMatchId(rs.getString("match_id"));
+                    match.setOrganId(rs.getString("organ_id"));
+                    match.setDonorId(rs.getString("donor_id"));
+                    match.setRecipientId(rs.getString("recipient_id"));
+                    java.sql.Timestamp matchDate = rs.getTimestamp("match_date");
+                    if (matchDate != null) match.setMatchDate(matchDate.toLocalDateTime());
+                    match.setStatus(rs.getString("status"));
+                    return match;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void updateMatchStatus(String matchId, String status) throws SQLException {
+        String sql = "UPDATE organ_match SET status = ? WHERE match_id = ?";
+        try (Connection conn = datasource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, status);
+            stmt.setString(2, matchId);
+            stmt.executeUpdate();
+        }
+    }
 }

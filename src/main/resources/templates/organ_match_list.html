@@ -25,6 +25,7 @@
                 <th>Recipient Name</th>
                 <th>Match Date</th>
                 <th>Status</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -35,6 +36,12 @@
             <td th:text="${match.recipientName}"></td>
             <td th:text="${#temporals.format(match.matchDate, 'yyyy-MM-dd HH:mm')}"></td>
             <td th:text="${match.status}"></td>
+            <td>
+                <form th:action="@{'/organ/match/approve/' + ${match.matchId}}" method="post" th:if="${match.status} != 'MATCHED'">
+                    <button type="submit" class="btn btn-success btn-sm">Approve</button>
+                </form>
+                <span th:if="${match.status} == 'MATCHED'" class="text-success">Approved</span>
+            </td>
         </tr>
         </tbody>
     </table>

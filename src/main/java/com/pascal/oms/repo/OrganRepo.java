@@ -219,4 +219,26 @@ public class OrganRepo {
         }
         return organs;
     }
+
+    public void updateOrganStatus(String organId, OrganStatus status) throws SQLException {
+        String sql = "UPDATE organ SET status = ? WHERE organ_id = ?";
+        try (Connection conn = datasource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, status.name());
+            stmt.setString(2, organId);
+            stmt.executeUpdate();
+        }
+    }
+
+    public void updateOrganStatusForDonorAndRecipient(String organName, String donorId, String recipientId, OrganStatus status) throws SQLException {
+        String sql = "UPDATE organ SET status = ? WHERE organ_name = ? AND (donor_id = ? OR recipient_id = ?)";
+        try (Connection conn = datasource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, status.name());
+            stmt.setString(2, organName);
+            stmt.setString(3, donorId);
+            stmt.setString(4, recipientId);
+            stmt.executeUpdate();
+        }
+    }
 }

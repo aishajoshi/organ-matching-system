@@ -61,7 +61,7 @@ public class OrganMatcher {
                     match.setDonorId(organ.getDonorId());
                     match.setRecipientId(bestMatch.getRecipientId());
                     match.setMatchDate(LocalDateTime.now());
-                    match.setStatus("MATCHED");
+                    match.setStatus("MATCHED"); // keep as matched
 
                     organMatchRepo.saveOrganMatch(match);
                 }
@@ -78,5 +78,22 @@ public class OrganMatcher {
 
     public List<OrganMatch> getAllMatches() {
         return organMatchRepo.getAllOrganMatches();
+    }
+
+    public boolean approveMatch(String matchId) {
+        try {
+            OrganMatch match = organMatchRepo.getOrganMatchById(matchId);
+            if (match == null || "APPROVED".equalsIgnoreCase(match.getStatus())) {
+                return false;
+            }
+            // Update match status to APPROVED
+            organMatchRepo.updateMatchStatus(matchId, "APPROVED");
+            // Update organ status for both donor and recipient to APPROVED
+            organRepo.updateOrganStatusForDonorAndRecipient(match.getOrganName(), match.getDonorId(), match.getRecipientId(), OrganStatus.APPROVED);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

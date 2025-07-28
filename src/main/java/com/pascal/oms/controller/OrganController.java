@@ -123,18 +123,17 @@ public class OrganController {
         return "redirect:/organ/matches";
     }
 
-    // Approve a matched organ
-    @PostMapping("/approve")
-    public String approveOrgan(@RequestParam("organId") String organId, Model model) {
-        boolean success = organService.approveOrgan(organId);
+    // Approve a matched organ by matchId
+    @PostMapping("/match/approve/{matchId}")
+    public String approveMatch(@PathVariable("matchId") String matchId, Model model) {
+        boolean success = organMatchingService.approveMatch(matchId);
         if (success) {
-            model.addAttribute("message", "Organ approved successfully.");
+            model.addAttribute("message", "Match approved successfully.");
         } else {
-            model.addAttribute("message", "Failed to approve organ. Only matched organs can be approved.");
+            model.addAttribute("message", "Failed to approve match.");
         }
-        List<Organ> organList = organService.getAllOrgans();
-        model.addAttribute("organs", organList);
-        return "organ_list";
+        model.addAttribute("matches", organMatchingService.getAllMatches());
+        return "organ_match_list";
     }
 
     // Show matched organs
