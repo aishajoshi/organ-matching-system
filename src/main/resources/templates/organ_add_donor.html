@@ -30,21 +30,20 @@
         </div>
         <div class="mb-3">
             <label for="bloodGroup" class="form-label">Blood Group</label>
-            <select class="form-select" id="bloodGroup" name="bloodGroup" required>
-                <option value="" disabled selected>Select Blood Group</option>
-                <option value="A+">A+</option>
-                <option value="A-">A-</option>
-                <option value="B+">B+</option>
-                <option value="B-">B-</option>
-                <option value="AB+">AB+</option>
-                <option value="AB-">AB-</option>
-                <option value="O+">O+</option>
-                <option value="O-">O-</option>
-                <option value="Other">Other</option>
-            </select>
+            <input type="text" class="form-control" id="bloodGroup" name="bloodGroup" readonly>
         </div>
         <button type="submit" class="btn btn-primary">Add Organ</button>
     </form>
 </div>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    const donors = /*[[${donors}]]*/ [];
+    document.getElementById('donorId').addEventListener('change', function() {
+        const selectedId = this.value;
+        const donor = donors.find(d => d.donorId == selectedId);
+        document.getElementById('bloodGroup').value = donor ? donor.bloodGroup : '';
+    });
+    /*]]>*/
+</script>
 </body>
 </html>
