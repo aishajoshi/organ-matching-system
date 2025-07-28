@@ -1,14 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Matched Organs</title>
-    <link rel="stylesheet" href="/static/css/detail.css">
-</head>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{header :: header-css}"></head>
 <body>
-    <h1>Matched Organs</h1>
-    <table border="1">
-        <thead>
+<div th:replace="~{header :: header}"></div>
+<div class="container mt-4">
+    <div class="mb-3">
+        <div class="btn-group" role="group" aria-label="Organ Actions">
+            <a class="btn btn-outline-primary" th:href="@{/organ/list}">Organ List</a>
+            <a class="btn btn-outline-success" th:href="@{/organ/add-donor-organ}">Add Donor Organ</a>
+            <a class="btn btn-outline-info" th:href="@{/organ/add-recipient-organ}">Add Recipient Organ Requirement</a>
+            <a class="btn btn-outline-warning active" th:href="@{/organ/matches}">Matched Organs</a>
+        </div>
+    </div>
+    <form th:action="@{/organ/match}" method="post" style="margin-bottom: 20px;">
+        <button type="submit" class="btn btn-primary">Run Organ Matching</button>
+    </form>
+    <h2>Matches</h2>
+    <table class="table table-bordered table-hover align-middle">
+        <thead class="table-light">
             <tr>
                 <th>Match ID</th>
                 <th>Organ Name</th>
@@ -19,17 +28,18 @@
             </tr>
         </thead>
         <tbody>
-        <!-- Thymeleaf syntax for Spring Boot -->
         <tr th:each="match : ${matches}">
             <td th:text="${match.matchId}"></td>
             <td th:text="${match.organName}"></td>
             <td th:text="${match.donorName}"></td>
             <td th:text="${match.recipientName}"></td>
-            <td th:text="${match.matchDate}"></td>
+            <td th:text="${#temporals.format(match.matchDate, 'yyyy-MM-dd HH:mm')}"></td>
             <td th:text="${match.status}"></td>
         </tr>
         </tbody>
     </table>
-    <a href="/organ/list">Back to Organ List</a>
+    <a class="btn btn-secondary mt-3" th:href="@{/organ/list}">Back to Organ List</a>
+</div>
+<div th:replace="~{footer :: footer}"></div>
 </body>
 </html>

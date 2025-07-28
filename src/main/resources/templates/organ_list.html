@@ -10,14 +10,13 @@
             <a class="btn btn-outline-primary" th:href="@{/organ/list}">Organ List</a>
             <a class="btn btn-outline-success" th:href="@{/organ/add-donor-organ}">Add Donor Organ</a>
             <a class="btn btn-outline-info" th:href="@{/organ/add-recipient-organ}">Add Recipient Organ Requirement</a>
+            <a class="btn btn-outline-warning" th:href="@{/organ/matches}">Matches</a>
         </div>
     </div>
 
     <h2>Registered Organs</h2>
 
-    <form th:action="@{/organ/match}" method="post" style="margin-bottom: 20px;">
-        <button type="submit" class="btn btn-primary">Run Organ Matching</button>
-    </form>
+
     <div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
 
     <table class="table table-bordered table-hover align-middle">
@@ -40,43 +39,6 @@
             <td th:text="${organ.status}"></td>
             <td th:text="${organ.donorId}"></td>
             <td th:text="${organ.recipientId != null ? organ.recipientId : ''}"></td>
-            <td>
-                <a class="btn btn-sm btn-outline-primary me-1"
-                   th:href="@{/organ/edit/{id}(id=${organ.organId})}">Edit</a>
-                <a class="btn btn-sm btn-outline-danger me-1" th:href="@{/organ/delete/{id}(id=${organ.organId})}"
-                   onclick="return confirm('Are you sure you want to delete this organ?')">Delete</a>
-                <span th:if="${organ.status} == 'MATCHED'">
-                    <form th:action="@{/organ/approve}" method="post" style="display:inline;">
-                        <input type="hidden" name="organId" th:value="${organ.organId}"/>
-                        <button type="submit" class="btn btn-sm btn-outline-success">Approve</button>
-                    </form>
-                </span>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-
-    <h3 class="mt-4">Matched Organs Awaiting Approval</h3>
-    <table class="table table-bordered table-hover align-middle">
-        <thead class="table-light">
-        <tr>
-            <th>Organ ID</th>
-            <th>Organ Name</th>
-            <th>Blood Group</th>
-            <th>Status</th>
-            <th>Donor ID</th>
-            <th>Recipient ID</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="organ : ${matchedOrgans}">
-            <td th:text="${organ.organId}"></td>
-            <td th:text="${organ.organName}"></td>
-            <td th:text="${organ.bloodGroup}"></td>
-            <td th:text="${organ.status}"></td>
-            <td th:text="${organ.donorId}"></td>
-            <td th:text="${organ.recipientId != null ? organ.recipientId : 'Not Assigned'}"></td>
             <td>
                 <a class="btn btn-sm btn-outline-primary me-1"
                    th:href="@{/organ/edit/{id}(id=${organ.organId})}">Edit</a>

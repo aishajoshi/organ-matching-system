@@ -112,7 +112,7 @@ public class OrganController {
     public String matchOrgans(Model model) {
         organMatchingService.matchOrgansToRecipients();
         model.addAttribute("message", "Organ matching completed successfully.");
-        return "redirect:/organ/list";
+        return "redirect:/organ/matches";
     }
 
     // Run organ matching via GET (for browser access)
@@ -120,7 +120,7 @@ public class OrganController {
     public String matchOrgansGet(Model model) {
         organMatchingService.matchOrgansToRecipients();
         model.addAttribute("message", "Organ matching completed successfully.");
-        return "redirect:/organ/list";
+        return "redirect:/organ/matches";
     }
 
     // Approve a matched organ
