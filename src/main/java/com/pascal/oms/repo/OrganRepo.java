@@ -86,13 +86,11 @@ public class OrganRepo {
                 Timestamp created = rs.getTimestamp("created_at");
                 Timestamp updated = rs.getTimestamp("updated_at");
                 Timestamp donated = rs.getTimestamp("donated_date");
-                Timestamp expiry = rs.getTimestamp("expiry_date");
                 Timestamp received = rs.getTimestamp("received_date");
 
                 organ.setCreatedAt(created != null ? created.toLocalDateTime() : null);
                 organ.setUpdatedAt(updated != null ? updated.toLocalDateTime() : null);
                 organ.setDonatedDate(donated != null ? donated.toLocalDateTime() : null);
-                organ.setExpiryDate(expiry != null ? expiry.toLocalDateTime() : null);
                 organ.setReceivedDate(received != null ? received.toLocalDateTime() : null);
 
                 organs.add(organ);
@@ -126,13 +124,11 @@ public class OrganRepo {
                     Timestamp created = rs.getTimestamp("created_at");
                     Timestamp updated = rs.getTimestamp("updated_at");
                     Timestamp donated = rs.getTimestamp("donated_date");
-                    Timestamp expiry = rs.getTimestamp("expiry_date");
                     Timestamp received = rs.getTimestamp("received_date");
 
                     organ.setCreatedAt(created != null ? created.toLocalDateTime() : null);
                     organ.setUpdatedAt(updated != null ? updated.toLocalDateTime() : null);
                     organ.setDonatedDate(donated != null ? donated.toLocalDateTime() : null);
-                    organ.setExpiryDate(expiry != null ? expiry.toLocalDateTime() : null);
                     organ.setReceivedDate(received != null ? received.toLocalDateTime() : null);
 
                     return organ;

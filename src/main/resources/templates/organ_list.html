@@ -38,7 +38,6 @@
         <tr th:each="organ : ${organs}">
             <td th:text="${organ.organId}">ORG123</td>
             <td th:text="${organ.organName}">Liver</td>
-            <td th:text="${organ.organType}">LIVER</td> <!-- ✅ FIXED -->
             <td th:text="${organ.bloodGroup}">A+</td>
             <td th:text="${organ.status}">AVAILABLE</td>
             <td th:text="${organ.donorId}">DONOR001</td>
@@ -59,87 +58,3 @@
     </table>
 
     <h3 class="mt-4">Matched Organs Awaiting Approval</h3>
-    <table class="table table-bordered table-sm">
-        <thead>
-        <tr>
-            <th>Organ ID</th>
-            <th>Organ Name</th>
-            <th>Organ Type</th>
-            <th>Blood Group</th>
-            <th>Donor ID</th>
-            <th>Recipient ID</th>
-            <th>Recipient Name</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="organ : ${organs}" th:if="${organ.status} == 'MATCHED'">
-            <td th:text="${organ.organId}"></td>
-            <td th:text="${organ.organName}"></td>
-            <td th:text="${organ.organType}"></td>
-            <td th:text="${organ.bloodGroup}"></td>
-            <td th:text="${organ.donorId}"></td>
-            <td th:text="${organ.recipientId}"></td>
-            <td th:text="${organ.recipientName}"></td>
-            <td>
-                <form th:action="@{/organ/approve}" method="post" style="display:inline;">
-                    <input type="hidden" name="organId" th:value="${organ.organId}" />
-                    <button type="submit" class="btn btn-success btn-sm">Approve</button>
-                </form>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-
-    <h3 class="mt-4">Approved Organs</h3>
-    <table class="table table-bordered table-sm">
-        <thead>
-        <tr>
-            <th>Organ ID</th>
-            <th>Organ Name</th>
-            <th>Organ Type</th>
-            <th>Blood Group</th>
-            <th>Donor ID</th>
-            <th>Recipient ID</th>
-            <th>Recipient Name</th>
-            <th>Approval Date</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="organ : ${organs}" th:if="${organ.status} == 'APPROVED'">
-            <td th:text="${organ.organId}"></td>
-            <td th:text="${organ.organName}"></td>
-            <td th:text="${organ.organType}"></td>
-            <td th:text="${organ.bloodGroup}"></td>
-            <td th:text="${organ.donorId}"></td>
-            <td th:text="${organ.recipientId}"></td>
-            <td th:text="${organ.recipientName}"></td>
-            <td th:text="${organ.updatedAt}"></td>
-        </tr>
-        </tbody>
-    </table>
-
-    <h3 class="mt-4">Audit Log (Recent Approvals)</h3>
-    <table class="table table-bordered table-sm">
-        <thead>
-        <tr>
-            <th>Organ ID</th>
-            <th>Recipient ID</th>
-            <th>Recipient Name</th>
-            <th>Approval Date</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="organ : ${organs}" th:if="${organ.status} == 'APPROVED'">
-            <td th:text="${organ.organId}"></td>
-            <td th:text="${organ.recipientId}"></td>
-            <td th:text="${organ.recipientName}"></td>
-            <td th:text="${organ.updatedAt}"></td>
-        </tr>
-        </tbody>
-    </table>
-</div>
-
-<div th:replace="~{footer :: footer}"></div>
-</body>
-</html>

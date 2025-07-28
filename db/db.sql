@@ -41,7 +41,7 @@ CREATE TABLE recipient
     created_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     waiting_time   INT       DEFAULT 0,
-    meld_score      FLOAT     DEFAULT 0
+    meld_score     FLOAT     DEFAULT 0
 );
 
 
@@ -49,7 +49,6 @@ CREATE TABLE recipient
 CREATE TABLE organ
 (
     organ_id      VARCHAR(36) PRIMARY KEY,
-    type          VARCHAR(50)  NOT NULL,
     description   VARCHAR(100) NULL,
     status        VARCHAR(50)  NULL,
     donor_id      VARCHAR(36),
@@ -58,6 +57,8 @@ CREATE TABLE organ
     received_date TIMESTAMP    NULL,
     created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    organ_name    VARCHAR(50)  NULL,
+    blood_group   VARCHAR(10)  NULL,
     FOREIGN KEY (donor_id) REFERENCES donor (donor_id),
     FOREIGN KEY (recipient_id) REFERENCES recipient (recipient_id)
 );

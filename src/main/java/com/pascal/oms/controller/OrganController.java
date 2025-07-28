@@ -47,11 +47,10 @@ public class OrganController {
 
     // Save multiple organs for a recipient
     @PostMapping("/add-donor-organ")
-    public String addOrganOfDonor(@RequestParam("donorId") String donerId,
+    public String addOrganOfDonor(@RequestParam("donorId") String donorId,
                                   @RequestParam("organName") String organName,
-                                  @RequestParam("organType") String organType,
                                   @RequestParam("bloodGroup") String bloodGroup) {
-        organService.addDonorOrgan(donerId, organName, organType, bloodGroup);
+        organService.addDonorOrgan(donorId, organName, bloodGroup);
         return "redirect:/organ/list?success";
     }
 
@@ -68,9 +67,8 @@ public class OrganController {
     @PostMapping("/add-recipient-organ")
     public String addOrganForRecipient(@RequestParam("recipientId") String recipientId,
                                        @RequestParam("organName") String organName,
-                                       @RequestParam("organType") String organType,
                                        @RequestParam("bloodGroup") String bloodGroup) {
-        organService.addRecipientOrgan(recipientId, organName, organType, bloodGroup);
+        organService.addRecipientOrgan(recipientId, organName,  bloodGroup);
         return "redirect:/organ/list?success";
     }
 

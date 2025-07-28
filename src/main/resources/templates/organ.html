@@ -11,36 +11,26 @@
     <form th:action="${editMode} ? '@{/organ/update}' : '@{/organ/save}'"
           th:object="${organ}" method="post">
 
-        <input type="hidden" th:if="${editMode}" th:field="*{organId}" />
+        <input type="hidden" th:if="${editMode}" th:field="*{organId}"/>
 
         <!-- Donor ID -->
         <div>
             <label for="donorId">Donor ID:</label>
-            <input type="text" id="donorId" th:field="*{donorId}" placeholder="Enter Donor ID" required />
+            <input type="text" id="donorId" th:field="*{donorId}" placeholder="Enter Donor ID" required/>
         </div>
 
         <!-- Recipient ID -->
         <div>
             <label for="recipientId">Recipient ID (optional):</label>
-            <input type="text" id="recipientId" th:field="*{recipientId}" placeholder="Enter Recipient ID" />
+            <input type="text" id="recipientId" th:field="*{recipientId}" placeholder="Enter Recipient ID"/>
         </div>
 
         <!-- Organ Name -->
         <div>
             <label for="organName">Organ Name:</label>
-            <input type="text" id="organName" th:field="*{organName}" required />
+            <input type="text" id="organName" th:field="*{organName}" required/>
         </div>
 
-        <!-- Organ Type -->
-        <div>
-            <label for="organType">Organ Type:</label>
-            <select id="organType" th:field="*{organType}" required>
-                <option value="">--Select Type--</option>
-                <option value="KIDNEY">Kidney</option>
-                <option value="LIVER">Liver</option>
-                <option value="HEART">Heart</option>
-            </select>
-        </div>
 
         <!-- Blood Group -->
         <div>
@@ -75,22 +65,17 @@
     </form>
 
     <!-- Register Multiple Organs for Donor -->
-    <hr />
+    <hr/>
     <h3>Add Multiple Organs for a Donor</h3>
     <form th:action="@{/organ/saveMultiple}" method="post">
         <div>
             <label for="multiDonorId">Donor ID:</label>
-            <input type="text" id="multiDonorId" name="donorId" required />
+            <input type="text" id="multiDonorId" name="donorId" required/>
         </div>
         <div id="organsContainer">
             <div class="organ-entry">
-                <input type="text" name="organNames" placeholder="Organ Name" required />
-                <select name="organTypes" required>
-                    <option value="">--Type--</option>
-                    <option value="KIDNEY">Kidney</option>
-                    <option value="LIVER">Liver</option>
-                    <option value="HEART">Heart</option>
-                </select>
+                <input type="text" name="organNames" placeholder="Organ Name" required/>
+
                 <select name="bloodGroups" required>
                     <option value="">--Blood Group--</option>
                     <option value="A_POSITIVE">A+</option>
@@ -109,37 +94,32 @@
     </form>
 
     <!-- Assign Existing Organ to Recipient -->
-    <hr />
+    <hr/>
     <h3>Assign Existing Organ to Recipient</h3>
     <form th:action="@{/organ/assign}" method="post">
         <div>
             <label for="assignOrganId">Organ ID:</label>
-            <input type="text" id="assignOrganId" name="organId" required />
+            <input type="text" id="assignOrganId" name="organId" required/>
         </div>
         <div>
             <label for="assignRecipientId">Recipient ID:</label>
-            <input type="text" id="assignRecipientId" name="recipientId" required />
+            <input type="text" id="assignRecipientId" name="recipientId" required/>
         </div>
         <button type="submit">Assign Organ</button>
     </form>
 
     <!-- Register Multiple Organs for Recipient -->
-    <hr />
+    <hr/>
     <h3>Add Multiple Organs for a Recipient</h3>
     <form th:action="@{/organ/saveMultipleForRecipient}" method="post">
         <div>
             <label for="multiRecipientId">Recipient ID:</label>
-            <input type="text" id="multiRecipientId" name="recipientId" required />
+            <input type="text" id="multiRecipientId" name="recipientId" required/>
         </div>
         <div id="recipientOrgansContainer">
             <div class="organ-entry">
-                <input type="text" name="organNames" placeholder="Organ Name" required />
-                <select name="organTypes" required>
-                    <option value="">--Type--</option>
-                    <option value="KIDNEY">Kidney</option>
-                    <option value="LIVER">Liver</option>
-                    <option value="HEART">Heart</option>
-                </select>
+                <input type="text" name="organNames" placeholder="Organ Name" required/>
+
                 <select name="bloodGroups" required>
                     <option value="">--Blood Group--</option>
                     <option value="A_POSITIVE">A+</option>
@@ -179,12 +159,7 @@
         entry.className = 'organ-entry';
         entry.innerHTML = `
             <input type="text" name="organNames" placeholder="Organ Name" required />
-            <select name="organTypes" required>
-                <option value="">--Type--</option>
-                <option value="KIDNEY">Kidney</option>
-                <option value="LIVER">Liver</option>
-                <option value="HEART">Heart</option>
-            </select>
+
             <select name="bloodGroups" required>
                 <option value="">--Blood Group--</option>
                 <option value="A_POSITIVE">A+</option>
@@ -205,12 +180,6 @@
         entry.className = 'organ-entry';
         entry.innerHTML = `
             <input type="text" name="organNames" placeholder="Organ Name" required />
-            <select name="organTypes" required>
-                <option value="">--Type--</option>
-                <option value="KIDNEY">Kidney</option>
-                <option value="LIVER">Liver</option>
-                <option value="HEART">Heart</option>
-            </select>
             <select name="bloodGroups" required>
                 <option value="">--Blood Group--</option>
                 <option value="A_POSITIVE">A+</option>

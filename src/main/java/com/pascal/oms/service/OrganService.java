@@ -63,13 +63,36 @@ public class OrganService {
         return organRepo.getOrganById(organId);
     }
 
-    public void addDonorOrgan(String donorId, String organName, String organType, String bloodGroup) {
+    private BloodGroup parseBloodGroup(String bloodGroupStr) {
+        switch (bloodGroupStr) {
+            case "A+":
+                return BloodGroup.A_POSITIVE;
+            case "A-":
+                return BloodGroup.A_NEGATIVE;
+            case "B+":
+                return BloodGroup.B_POSITIVE;
+            case "B-":
+                return BloodGroup.B_NEGATIVE;
+            case "AB+":
+                return BloodGroup.AB_POSITIVE;
+            case "AB-":
+                return BloodGroup.AB_NEGATIVE;
+            case "O+":
+                return BloodGroup.O_POSITIVE;
+            case "O-":
+                return BloodGroup.O_NEGATIVE;
+            default:
+                throw new IllegalArgumentException("Invalid blood group: " + bloodGroupStr);
+        }
+    }
+
+    public void addDonorOrgan(String donorId, String organName, String bloodGroup) {
         List<Organ> organs = new java.util.ArrayList<>();
         Organ organ = new Organ();
         organ.setOrganId(Utils.UUID());
         organ.setDonorId(donorId);
         organ.setOrganName(organName);
-        organ.setBloodGroup(BloodGroup.valueOf(bloodGroup));
+        organ.setBloodGroup(BloodGroup.fromValue(bloodGroup));
         organ.setStatus(OrganStatus.AVAILABLE);
         organ.setCreatedAt(LocalDateTime.now());
         organ.setUpdatedAt(LocalDateTime.now());
@@ -77,14 +100,14 @@ public class OrganService {
         organRepo.saveMultipleOrgans(organs);
     }
 
-    public void saveMultipleOrgansForRecipient(String recipientId, List<String> organNames, List<String> organTypes, List<String> bloodGroups) {
+    public void saveMultipleOrgansForRecipient(String recipientId, List<String> organNames, List<String> bloodGroups) {
         List<Organ> organs = new java.util.ArrayList<>();
         for (int i = 0; i < organNames.size(); i++) {
             Organ organ = new Organ();
             organ.setOrganId(Utils.UUID());
             organ.setRecipientId(recipientId);
             organ.setOrganName(organNames.get(i));
-            organ.setBloodGroup(BloodGroup.valueOf(bloodGroups.get(i)));
+            organ.setBloodGroup(BloodGroup.fromValue(bloodGroups.get(i)));
             organ.setStatus(OrganStatus.MATCHED);
             organ.setCreatedAt(LocalDateTime.now());
             organ.setUpdatedAt(LocalDateTime.now());
@@ -112,12 +135,12 @@ public class OrganService {
         return false;
     }
 
-    public void addRecipientOrgan(String recipientId, String organName, String organType, String bloodGroup) {
+    public void addRecipientOrgan(String recipientId, String organName, String bloodGroup) {
         Organ organ = new Organ();
         organ.setOrganId(Utils.UUID());
         organ.setRecipientId(recipientId);
         organ.setOrganName(organName);
-        organ.setBloodGroup(BloodGroup.valueOf(bloodGroup));
+        organ.setBloodGroup(BloodGroup.fromValue(bloodGroup));
         organ.setStatus(OrganStatus.REQUIRED);
         organ.setCreatedAt(LocalDateTime.now());
         organ.setUpdatedAt(LocalDateTime.now());
