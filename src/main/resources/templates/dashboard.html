@@ -10,6 +10,10 @@
             <p>Total Donors: <span id="totalDonors">0</span></p>
             <p>Total Recipients: <span id="totalRecipients">0</span></p>
             <p>Total Organs: <span id="totalOrgans">0</span></p>
+            <p>Total Required Organs: <span id="totalRequiredOrgans">0</span></p>
+            <p>Total Donated Organs: <span id="totalDonatedOrgans">0</span></p>
+            <button id="matchOrgansBtn" class="btn btn-success">Match Organs</button>
+            <div id="matchOrgansMsg" style="margin-top:10px;color:green;"></div>
         </div>
         <div class="card">
             <h3>Recent Matches</h3>
@@ -26,12 +30,26 @@
                 document.getElementById('totalDonors').textContent = data.totalDonors;
                 document.getElementById('totalRecipients').textContent = data.totalRecipients;
                 document.getElementById('totalOrgans').textContent = data.totalOrgans;
+                document.getElementById('totalRequiredOrgans').textContent = data.totalRequiredOrgans;
+                document.getElementById('totalDonatedOrgans').textContent = data.totalDonatedOrgans;
             })
             .catch(err => {
                 document.getElementById('totalDonors').textContent = 'Error';
                 document.getElementById('totalRecipients').textContent = 'Error';
                 document.getElementById('totalOrgans').textContent = 'Error';
+                document.getElementById('totalRequiredOrgans').textContent = 'Error';
+                document.getElementById('totalDonatedOrgans').textContent = 'Error';
             });
+        document.getElementById('matchOrgansBtn').addEventListener('click', function() {
+            fetch('/organ/match-organs', {method: 'POST'})
+                .then(response => response.text())
+                .then(msg => {
+                    document.getElementById('matchOrgansMsg').textContent = msg;
+                })
+                .catch(() => {
+                    document.getElementById('matchOrgansMsg').textContent = 'Matching failed.';
+                });
+        });
     });
 </script>
 </body>

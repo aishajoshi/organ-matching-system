@@ -130,4 +130,12 @@ public class OrganController {
         model.addAttribute("organs", organList);
         return "organ_list";
     }
+
+    // Match organs (dashboard button)
+    @PostMapping("/organ/match")
+    @ResponseBody
+    public String matchOrgans() {
+        organMatchingService.matchOrgansToRecipients();
+        return "Organ matching completed.";
+    }
 }

@@ -3,16 +3,14 @@ package com.pascal.oms.controller;
 import com.pascal.oms.endpoint.ParkingTicketManagementService;
 import com.pascal.oms.entities.Session;
 import com.pascal.oms.service.DonorService;
-import com.pascal.oms.service.RecipientService;
 import com.pascal.oms.service.OrganService;
+import com.pascal.oms.service.RecipientService;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -62,6 +60,16 @@ public class HomeController {
         stats.put("totalDonors", donorService.getAllDonors().size());
         stats.put("totalRecipients", recipientService.getAllRecipients().size());
         stats.put("totalOrgans", organService.getAllOrgans().size());
+        // Calculate total required organs
+        int totalRequiredOrgans = (int) organService.getAllOrgans().stream()
+                .filter(o -> o.getStatus() == com.pascal.oms.entities.OrganStatus.REQUIRED)
+                .count();
+        stats.put("totalRequiredOrgans", totalRequiredOrgans);
+        // Calculate total donated organs
+        int totalDonatedOrgans = (int) organService.getAllOrgans().stream()
+                .filter(o -> o.getStatus() == com.pascal.oms.entities.OrganStatus.AVAILABLE)
+                .count();
+        stats.put("totalDonatedOrgans", totalDonatedOrgans);
         return stats;
     }
 }

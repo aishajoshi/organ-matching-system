@@ -42,7 +42,7 @@ public class OrganMatcher {
                 List<Recipient> compatibleRecipients = recipients.stream()
                         .filter(r -> r.getRequiredOrgan() != null && r.getRequiredOrgan().equalsIgnoreCase(organ.getOrganName()))
                         .filter(r -> isBloodCompatible(organ.getBloodGroup(), r.getBloodGroup()))
-                        .filter(r -> r.getStatus() == null || r.getStatus().equalsIgnoreCase("WAITING"))
+                        .filter(r -> r.getStatus() == null || r.getStatus().equalsIgnoreCase("REQUIRED"))
                         .sorted(Comparator.comparingInt(Recipient::getUrgencyLevel).reversed())
                         .toList();
 
