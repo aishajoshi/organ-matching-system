@@ -96,4 +96,19 @@ public class OrganMatcher {
             return false;
         }
     }
+
+
+    public boolean rejectMatch(String matchId) {
+        OrganMatch match = organMatchRepo.getOrganMatchById(matchId);
+        if (match == null) {
+            return false;
+        }
+        try {
+            organMatchRepo.updateMatchStatus(matchId, "REJECTED");
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

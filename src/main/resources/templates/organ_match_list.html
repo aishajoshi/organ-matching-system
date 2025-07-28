@@ -4,14 +4,7 @@
 <body>
 <div th:replace="~{header :: header}"></div>
 <div class="container mt-4">
-    <div class="mb-3">
-        <div class="btn-group" role="group" aria-label="Organ Actions">
-            <a class="btn btn-outline-primary" th:href="@{/organ/list}">Organ List</a>
-            <a class="btn btn-outline-success" th:href="@{/organ/add-donor-organ}">Add Donor Organ</a>
-            <a class="btn btn-outline-info" th:href="@{/organ/add-recipient-organ}">Add Recipient Organ Requirement</a>
-            <a class="btn btn-outline-warning active" th:href="@{/organ/matches}">Matched Organs</a>
-        </div>
-    </div>
+
     <form th:action="@{/organ/match}" method="post" style="margin-bottom: 20px;">
         <button type="submit" class="btn btn-primary">Run Organ Matching</button>
     </form>
@@ -37,10 +30,16 @@
             <td th:text="${#temporals.format(match.matchDate, 'yyyy-MM-dd HH:mm')}"></td>
             <td th:text="${match.status}"></td>
             <td>
-                <form th:action="@{'/organ/match/approve/' + ${match.matchId}}" method="post" th:if="${match.status} != 'MATCHED'">
-                    <button type="submit" class="btn btn-success btn-sm">Approve</button>
-                </form>
-                <span th:if="${match.status} == 'MATCHED'" class="text-success">Approved</span>
+                <span th:if="${match.status} == 'MATCHED'">
+                    <form th:action="@{'/organ/match/approve/' + ${match.matchId}}" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-success btn-sm">Approve</button>
+                    </form>
+                    <form th:action="@{'/organ/match/reject/' + ${match.matchId}}" method="post" style="display:inline; margin-left:5px;">
+                        <button type="submit" class="btn btn-danger btn-sm">Reject</button>
+                    </form>
+                </span>
+                <span th:if="${match.status} == 'APPROVED'" class="text-success">Approved</span>
+                <span th:if="${match.status} == 'REJECTED'" class="text-danger">Rejected</span>
             </td>
         </tr>
         </tbody>

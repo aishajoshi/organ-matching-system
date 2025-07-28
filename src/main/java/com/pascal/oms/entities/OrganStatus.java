@@ -13,7 +13,7 @@ public enum OrganStatus {
     UNAVAILABLE("UNAVAILABLE"),
     APPROVED("APPROVED"),
     REQUIRED("REQUIRED"),
-    ;
+    REJECTED("REJECTED");;
 
     private final String status;
 

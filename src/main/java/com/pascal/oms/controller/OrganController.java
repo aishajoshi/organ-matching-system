@@ -123,6 +123,13 @@ public class OrganController {
         return "redirect:/organ/matches";
     }
 
+    // Show matched organs
+    @GetMapping("/matches")
+    public String showOrganMatches(Model model) {
+        model.addAttribute("matches", organMatchingService.getAllMatches());
+        return "organ_match_list";
+    }
+
     // Approve a matched organ by matchId
     @PostMapping("/match/approve/{matchId}")
     public String approveMatch(@PathVariable("matchId") String matchId, Model model) {
@@ -136,9 +143,16 @@ public class OrganController {
         return "organ_match_list";
     }
 
-    // Show matched organs
-    @GetMapping("/matches")
-    public String showOrganMatches(Model model) {
+
+    // Reject a matched organ by matchId
+    @PostMapping("/match/reject/{matchId}")
+    public String rejectMatch(@PathVariable("matchId") String matchId, Model model) {
+        boolean success = organMatchingService.rejectMatch(matchId);
+        if (success) {
+            model.addAttribute("message", "Match rejected successfully.");
+        } else {
+            model.addAttribute("message", "Failed to reject match.");
+        }
         model.addAttribute("matches", organMatchingService.getAllMatches());
         return "organ_match_list";
     }

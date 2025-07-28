@@ -49,6 +49,10 @@
                         <input type="hidden" name="organId" th:value="${organ.organId}"/>
                         <button type="submit" class="btn btn-sm btn-outline-success">Approve</button>
                     </form>
+                    <form th:action="@{/organ/reject}" method="post" style="display:inline; margin-left:5px;">
+                        <input type="hidden" name="organId" th:value="${organ.organId}"/>
+                        <button type="submit" class="btn btn-sm btn-outline-danger">Reject</button>
+                    </form>
                 </span>
             </td>
         </tr>
