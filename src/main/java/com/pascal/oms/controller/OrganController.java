@@ -68,7 +68,7 @@ public class OrganController {
     public String addOrganForRecipient(@RequestParam("recipientId") String recipientId,
                                        @RequestParam("organName") String organName,
                                        @RequestParam("bloodGroup") String bloodGroup) {
-        organService.addRecipientOrgan(recipientId, organName,  bloodGroup);
+        organService.addRecipientOrgan(recipientId, organName, bloodGroup);
         return "redirect:/organ/list?success";
     }
 
@@ -112,9 +112,15 @@ public class OrganController {
     public String matchOrgans(Model model) {
         organMatchingService.matchOrgansToRecipients();
         model.addAttribute("message", "Organ matching completed successfully.");
-        List<Organ> organList = organService.getAllOrgans();
-        model.addAttribute("organs", organList);
-        return "organ_list";
+        return "redirect:/organ/list";
+    }
+
+    // Run organ matching via GET (for browser access)
+    @GetMapping("/match")
+    public String matchOrgansGet(Model model) {
+        organMatchingService.matchOrgansToRecipients();
+        model.addAttribute("message", "Organ matching completed successfully.");
+        return "redirect:/organ/list";
     }
 
     // Approve a matched organ
@@ -131,11 +137,10 @@ public class OrganController {
         return "organ_list";
     }
 
-    // Match organs (dashboard button)
-    @PostMapping("/organ/match")
-    @ResponseBody
-    public String matchOrgans() {
-        organMatchingService.matchOrgansToRecipients();
-        return "Organ matching completed.";
+    // Show matched organs
+    @GetMapping("/matches")
+    public String showOrganMatches(Model model) {
+        model.addAttribute("matches", organMatchingService.getAllMatches());
+        return "organ_match_list";
     }
 }

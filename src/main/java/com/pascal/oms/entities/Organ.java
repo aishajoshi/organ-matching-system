@@ -14,7 +14,6 @@ public class Organ {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime donatedDate;
-    private LocalDateTime expiryDate;
     private LocalDateTime receivedDate;
 
     public String getOrganId() {
@@ -98,13 +97,6 @@ public class Organ {
         this.donatedDate = donatedDate;
     }
 
-    public LocalDateTime getExpiryDate() {
-        return expiryDate;
-    }
-
-    public void setExpiryDate(LocalDateTime expiryDate) {
-        this.expiryDate = expiryDate;
-    }
 
     public LocalDateTime getReceivedDate() {
         return receivedDate;
@@ -127,7 +119,6 @@ public class Organ {
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 ", donatedDate=" + donatedDate +
-                ", expiryDate=" + expiryDate +
                 ", receivedDate=" + receivedDate +
                 '}';
     }

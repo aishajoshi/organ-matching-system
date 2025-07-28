@@ -142,11 +142,9 @@ public class OrganRepo {
 
     public boolean updateOrgan(Organ organ) throws SQLException {
         String sql = "UPDATE organ SET organ_name = ?, donor_id = ?, recipient_id = ?, blood_group = ?, " +
-                "status = ?, updated_at = ?, donated_date = ?, expiry_date = ?, received_date = ? WHERE organ_id = ?";
-
+                "status = ?, updated_at = ?, donated_date = ?, received_date = ? WHERE organ_id = ?";
         try (Connection conn = datasource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-
             stmt.setString(1, organ.getOrganName());
             stmt.setString(2, organ.getDonorId());
             stmt.setString(3, organ.getRecipientId());
@@ -154,10 +152,8 @@ public class OrganRepo {
             stmt.setString(5, organ.getStatus().name());
             stmt.setTimestamp(6, organ.getUpdatedAt() != null ? Timestamp.valueOf(organ.getUpdatedAt()) : new Timestamp(System.currentTimeMillis()));
             stmt.setTimestamp(7, organ.getDonatedDate() != null ? Timestamp.valueOf(organ.getDonatedDate()) : null);
-            stmt.setTimestamp(8, organ.getExpiryDate() != null ? Timestamp.valueOf(organ.getExpiryDate()) : null);
-            stmt.setTimestamp(9, organ.getReceivedDate() != null ? Timestamp.valueOf(organ.getReceivedDate()) : null);
-            stmt.setString(10, organ.getOrganId());
-
+            stmt.setTimestamp(8, organ.getReceivedDate() != null ? Timestamp.valueOf(organ.getReceivedDate()) : null);
+            stmt.setString(9, organ.getOrganId());
             return stmt.executeUpdate() > 0;
         }
     }
@@ -188,11 +184,38 @@ public class OrganRepo {
                 Organ organ = new Organ();
                 organ.setOrganId(rs.getString("organ_id"));
                 organ.setOrganName(rs.getString("organ_name"));
+                organ.setBloodGroup(rs.getString("blood_group"));
                 organ.setDonorId(rs.getString("donor_id"));
                 organ.setRecipientId(rs.getString("recipient_id"));
                 // Set other fields as needed
                 organs.add(organ);
             }
+        }
+        return organs;
+    }
+
+    // Fetch all organs for a given recipient
+    public List<Organ> getOrgansByRecipientId(String recipientId) {
+        List<Organ> organs = new ArrayList<>();
+        String sql = "SELECT * FROM organ WHERE recipient_id = ?";
+        try (Connection conn = datasource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, recipientId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Organ organ = new Organ();
+                    organ.setOrganId(rs.getString("organ_id"));
+                    organ.setOrganName(rs.getString("organ_name"));
+                    organ.setDonorId(rs.getString("donor_id"));
+                    organ.setRecipientId(rs.getString("recipient_id"));
+                    organ.setBloodGroup(rs.getString("blood_group"));
+                    organ.setStatus(rs.getString("status") != null ? OrganStatus.valueOf(rs.getString("status")) : null);
+                    // Set other fields as needed
+                    organs.add(organ);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return organs;
     }

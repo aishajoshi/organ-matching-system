@@ -14,10 +14,10 @@ public class Recipient {
     private List<Organ> organs;
     private int urgencyLevel;
     private int waitingTime;
-    private String requiredOrgan; // New field for required organ
     private float meldScore;
 
-    public Recipient() {}
+    public Recipient() {
+    }
 
     public String getRecipientId() {
         return recipientId;
@@ -99,13 +99,6 @@ public class Recipient {
         this.waitingTime = waitingTime;
     }
 
-    public String getRequiredOrgan() {
-        return requiredOrgan;
-    }
-
-    public void setRequiredOrgan(String requiredOrgan) {
-        this.requiredOrgan = requiredOrgan;
-    }
 
     public float getMeldScore() {
         return meldScore;
@@ -113,5 +106,22 @@ public class Recipient {
 
     public void setMeldScore(float meldScore) {
         this.meldScore = meldScore;
+    }
+
+    @Override
+    public String toString() {
+        return "Recipient{" +
+                "recipientId='" + recipientId + '\'' +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                ", bloodGroup='" + bloodGroup + '\'' +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
+                ", status='" + status + '\'' +
+                ", organs=" + organs +
+                ", urgencyLevel=" + urgencyLevel +
+                ", waitingTime=" + waitingTime +
+                ", meldScore=" + meldScore +
+                '}';
     }
 }

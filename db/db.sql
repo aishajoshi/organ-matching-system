@@ -62,3 +62,15 @@ CREATE TABLE organ
     FOREIGN KEY (donor_id) REFERENCES donor (donor_id),
     FOREIGN KEY (recipient_id) REFERENCES recipient (recipient_id)
 );
+
+CREATE TABLE organ_match (
+    match_id VARCHAR(36) PRIMARY KEY,
+    organ_id VARCHAR(36) NOT NULL,
+    donor_id VARCHAR(36) NOT NULL,
+    recipient_id VARCHAR(36) NOT NULL,
+    match_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    status VARCHAR(50) DEFAULT 'MATCHED',
+    FOREIGN KEY (organ_id) REFERENCES organ(organ_id),
+    FOREIGN KEY (donor_id) REFERENCES donor(donor_id),
+    FOREIGN KEY (recipient_id) REFERENCES recipient(recipient_id)
+);

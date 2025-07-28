@@ -12,18 +12,13 @@
             <p>Total Organs: <span id="totalOrgans">0</span></p>
             <p>Total Required Organs: <span id="totalRequiredOrgans">0</span></p>
             <p>Total Donated Organs: <span id="totalDonatedOrgans">0</span></p>
-            <button id="matchOrgansBtn" class="btn btn-success">Match Organs</button>
-            <div id="matchOrgansMsg" style="margin-top:10px;color:green;"></div>
         </div>
-        <div class="card">
-            <h3>Recent Matches</h3>
-            <p>Matching algorithms and recent activity summary go here...</p>
-        </div>
+       
     </div>
 </div>
 <div th:replace="~{footer :: footer}"></div>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         fetch('/api/stats')
             .then(response => response.json())
             .then(data => {
@@ -40,16 +35,7 @@
                 document.getElementById('totalRequiredOrgans').textContent = 'Error';
                 document.getElementById('totalDonatedOrgans').textContent = 'Error';
             });
-        document.getElementById('matchOrgansBtn').addEventListener('click', function() {
-            fetch('/organ/match-organs', {method: 'POST'})
-                .then(response => response.text())
-                .then(msg => {
-                    document.getElementById('matchOrgansMsg').textContent = msg;
-                })
-                .catch(() => {
-                    document.getElementById('matchOrgansMsg').textContent = 'Matching failed.';
-                });
-        });
+
     });
 </script>
 </body>

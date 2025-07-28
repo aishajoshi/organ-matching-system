@@ -1,5 +1,6 @@
 package com.pascal.oms.repo;
 
+import com.pascal.oms.entities.Organ;
 import com.pascal.oms.entities.Recipient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +24,9 @@ public class RecipientRepo {
     public RecipientRepo(Datasource dataSource) {
         this.dataSource = dataSource;
     }
+
+    @Autowired
+    private OrganRepo organRepo;
 
     // Save a recipient
     public void saveRecipient(Recipient recipient) throws SQLException {
@@ -55,11 +59,9 @@ public class RecipientRepo {
     public List<Recipient> getAllRecipients() {
         List<Recipient> recipients = new ArrayList<>();
         String sql = "SELECT * FROM recipient";
-
         try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
-
             while (rs.next()) {
                 Recipient recipient = new Recipient();
                 recipient.setRecipientId(rs.getString("recipient_id"));
@@ -69,20 +71,17 @@ public class RecipientRepo {
                 recipient.setPhone(rs.getString("phone"));
                 recipient.setEmail(rs.getString("email"));
                 recipient.setStatus(rs.getString("status"));
-
-                // Again, urgency_level inconsistency:
                 recipient.setUrgencyLevel(rs.getInt("urgency_level"));
-
                 recipient.setMeldScore(rs.getFloat("meld_score"));
                 recipient.setWaitingTime(rs.getInt("waiting_time"));
-                recipient.setRequiredOrgan(rs.getString("required_organ"));
+                // Fetch all organs for this recipient
+                List<Organ> organs = organRepo.getOrgansByRecipientId(recipient.getRecipientId());
+                recipient.setOrgans(organs);
                 recipients.add(recipient);
             }
-
         } catch (SQLException e) {
             logger.error("Error fetching recipients", e);
         }
-
         return recipients;
     }
 
@@ -100,8 +99,7 @@ public class RecipientRepo {
             stmt.setInt(7, recipient.getUrgencyLevel());
             stmt.setFloat(8, recipient.getMeldScore());
             stmt.setInt(9, recipient.getWaitingTime());
-            stmt.setString(10, recipient.getRequiredOrgan());
-            stmt.setString(11, recipient.getRecipientId());
+            stmt.setString(10, recipient.getRecipientId());
             return stmt.executeUpdate() > 0;
         }
     }

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Matched Organs</title>
+    <link rel="stylesheet" href="/static/css/detail.css">
+</head>
+<body>
+    <h1>Matched Organs</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Match ID</th>
+                <th>Organ Name</th>
+                <th>Donor Name</th>
+                <th>Recipient Name</th>
+                <th>Match Date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+        <!-- Thymeleaf syntax for Spring Boot -->
+        <tr th:each="match : ${matches}">
+            <td th:text="${match.matchId}"></td>
+            <td th:text="${match.organName}"></td>
+            <td th:text="${match.donorName}"></td>
+            <td th:text="${match.recipientName}"></td>
+            <td th:text="${match.matchDate}"></td>
+            <td th:text="${match.status}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <a href="/organ/list">Back to Organ List</a>
+</body>
+</html>

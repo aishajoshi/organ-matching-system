@@ -1,8 +1,10 @@
 package com.pascal.oms.service;
 
 import com.pascal.oms.entities.Organ;
+import com.pascal.oms.entities.OrganMatch;
 import com.pascal.oms.entities.OrganStatus;
 import com.pascal.oms.entities.Recipient;
+import com.pascal.oms.repo.OrganMatchRepo;
 import com.pascal.oms.repo.OrganRepo;
 import com.pascal.oms.repo.RecipientRepo;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,8 @@ public class OrganMatcher {
 
     private final RecipientRepo recipientRepo;
 
+    private final OrganMatchRepo organMatchRepo;
+
     private static final Map<String, List<String>> compatibleBloodGroups = new HashMap<>() {{
         put("O-", List.of("O-", "O+", "A-", "A+", "B-", "B+", "AB-", "AB+"));
         put("O+", List.of("O+", "A+", "B+", "AB+"));
@@ -28,9 +32,10 @@ public class OrganMatcher {
         put("AB+", List.of("AB+"));
     }};
 
-    public OrganMatcher(OrganRepo organRepo, RecipientRepo recipientRepo) {
+    public OrganMatcher(OrganRepo organRepo, RecipientRepo recipientRepo, OrganMatchRepo organMatchRepo) {
         this.organRepo = organRepo;
         this.recipientRepo = recipientRepo;
+        this.organMatchRepo = organMatchRepo;
     }
 
     public void matchOrgansToRecipients() {
@@ -40,7 +45,8 @@ public class OrganMatcher {
 
             for (Organ organ : availableOrgans) {
                 List<Recipient> compatibleRecipients = recipients.stream()
-                        .filter(r -> r.getRequiredOrgan() != null && r.getRequiredOrgan().equalsIgnoreCase(organ.getOrganName()))
+                        .filter(r -> r.getOrgans() != null && r.getOrgans().stream()
+                                .anyMatch(recOrg -> recOrg.getOrganName().equalsIgnoreCase(organ.getOrganName())))
                         .filter(r -> isBloodCompatible(organ.getBloodGroup(), r.getBloodGroup()))
                         .filter(r -> r.getStatus() == null || r.getStatus().equalsIgnoreCase("REQUIRED"))
                         .sorted(Comparator.comparingInt(Recipient::getUrgencyLevel).reversed())
@@ -49,14 +55,15 @@ public class OrganMatcher {
                 if (!compatibleRecipients.isEmpty()) {
                     Recipient bestMatch = compatibleRecipients.get(0);
 
-                    organ.setRecipientId(bestMatch.getRecipientId());
-                    organ.setStatus(OrganStatus.MATCHED);
-                    organ.setReceivedDate(LocalDateTime.now());
+                    OrganMatch match = new OrganMatch();
+                    match.setMatchId(UUID.randomUUID().toString());
+                    match.setOrganId(organ.getOrganId());
+                    match.setDonorId(organ.getDonorId());
+                    match.setRecipientId(bestMatch.getRecipientId());
+                    match.setMatchDate(LocalDateTime.now());
+                    match.setStatus("MATCHED");
 
-                    bestMatch.setStatus("MATCHED");
-
-                    organRepo.updateOrgan(organ);
-                    recipientRepo.updateRecipient(bestMatch);
+                    organMatchRepo.saveOrganMatch(match);
                 }
             }
         } catch (Exception e) {
@@ -67,5 +74,9 @@ public class OrganMatcher {
     private boolean isBloodCompatible(String donorBlood, String recipientBlood) {
         List<String> compatible = compatibleBloodGroups.getOrDefault(donorBlood.toUpperCase(), new ArrayList<>());
         return compatible.contains(recipientBlood.toUpperCase());
+    }
+
+    public List<OrganMatch> getAllMatches() {
+        return organMatchRepo.getAllOrganMatches();
     }
 }

@@ -39,7 +39,7 @@
             <td th:text="${organ.bloodGroup}"></td>
             <td th:text="${organ.status}"></td>
             <td th:text="${organ.donorId}"></td>
-            <td th:text="${organ.recipientId != null ? organ.recipientId : 'Not Assigned'}"></td>
+            <td th:text="${organ.recipientId != null ? organ.recipientId : ''}"></td>
             <td>
                 <a class="btn btn-sm btn-outline-primary me-1"
                    th:href="@{/organ/edit/{id}(id=${organ.organId})}">Edit</a>
