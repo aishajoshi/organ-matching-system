@@ -21,8 +21,8 @@ public class OrganRepo {
     }
 
     public void saveOrgan(Organ organ) throws SQLException {
-        String sql = "INSERT INTO organ (organ_id, organ_name, donor_id, recipient_id, blood_group, status, created_at, updated_at, donated_date, expiry_date, received_date) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?,  ?, ?, ?)";
+        String sql = "INSERT INTO organ (organ_id, organ_name, donor_id, recipient_id, blood_group, status, created_at, updated_at, donated_date,  received_date) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?,  ?, ?)";
 
         try (Connection conn = datasource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -35,8 +35,7 @@ public class OrganRepo {
             stmt.setTimestamp(7, organ.getCreatedAt() != null ? Timestamp.valueOf(organ.getCreatedAt()) : new Timestamp(System.currentTimeMillis()));
             stmt.setTimestamp(8, organ.getUpdatedAt() != null ? Timestamp.valueOf(organ.getUpdatedAt()) : new Timestamp(System.currentTimeMillis()));
             stmt.setTimestamp(9, organ.getDonatedDate() != null ? Timestamp.valueOf(organ.getDonatedDate()) : null);
-            stmt.setTimestamp(10, organ.getExpiryDate() != null ? Timestamp.valueOf(organ.getExpiryDate()) : null);
-            stmt.setTimestamp(11, organ.getReceivedDate() != null ? Timestamp.valueOf(organ.getReceivedDate()) : null);
+            stmt.setTimestamp(10, organ.getReceivedDate() != null ? Timestamp.valueOf(organ.getReceivedDate()) : null);
             stmt.executeUpdate();
         }
     }
