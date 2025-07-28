@@ -1,6 +1,5 @@
 package com.pascal.oms.repo;
 
-import com.pascal.oms.entities.BloodGroup;
 import com.pascal.oms.entities.Organ;
 import com.pascal.oms.entities.OrganStatus;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +29,7 @@ public class OrganRepo {
             stmt.setString(2, organ.getOrganName());
             stmt.setString(3, organ.getDonorId());
             stmt.setString(4, organ.getRecipientId());
-            stmt.setString(5, organ.getBloodGroup() != null ? organ.getBloodGroup().name() : null);
+            stmt.setString(5, organ.getBloodGroup());
             stmt.setString(6, organ.getStatus() != null ? organ.getStatus().name() : null);
             stmt.setTimestamp(7, organ.getCreatedAt() != null ? Timestamp.valueOf(organ.getCreatedAt()) : new Timestamp(System.currentTimeMillis()));
             stmt.setTimestamp(8, organ.getUpdatedAt() != null ? Timestamp.valueOf(organ.getUpdatedAt()) : new Timestamp(System.currentTimeMillis()));
@@ -52,7 +51,7 @@ public class OrganRepo {
                 stmt.setString(2, organ.getOrganName());
                 stmt.setString(3, organ.getDonorId());
                 stmt.setString(4, organ.getRecipientId());
-                stmt.setString(5, organ.getBloodGroup().name());
+                stmt.setString(5, organ.getBloodGroup());
                 stmt.setString(6, organ.getStatus().name());
                 stmt.setTimestamp(7, organ.getDonatedDate() != null ? Timestamp.valueOf(organ.getDonatedDate()) : null);
                 stmt.setTimestamp(8, organ.getReceivedDate() != null ? Timestamp.valueOf(organ.getReceivedDate()) : null);
@@ -79,7 +78,7 @@ public class OrganRepo {
                 organ.setOrganName(rs.getString("organ_name"));
                 organ.setDonorId(rs.getString("donor_id"));
                 organ.setRecipientId(rs.getString("recipient_id"));
-                organ.setBloodGroup(BloodGroup.valueOf(rs.getString("blood_group")));
+                organ.setBloodGroup(rs.getString("blood_group"));
                 organ.setStatus(OrganStatus.valueOf(rs.getString("status")));
 
                 Timestamp created = rs.getTimestamp("created_at");
@@ -117,7 +116,7 @@ public class OrganRepo {
                     organ.setOrganName(rs.getString("organ_name"));
                     organ.setDonorId(rs.getString("donor_id"));
                     organ.setRecipientId(rs.getString("recipient_id"));
-                    organ.setBloodGroup(BloodGroup.valueOf(rs.getString("blood_group")));
+                    organ.setBloodGroup(rs.getString("blood_group"));
                     organ.setStatus(OrganStatus.valueOf(rs.getString("status")));
 
                     Timestamp created = rs.getTimestamp("created_at");
@@ -151,7 +150,7 @@ public class OrganRepo {
             stmt.setString(1, organ.getOrganName());
             stmt.setString(2, organ.getDonorId());
             stmt.setString(3, organ.getRecipientId());
-            stmt.setString(4, organ.getBloodGroup().name());
+            stmt.setString(4, organ.getBloodGroup());
             stmt.setString(5, organ.getStatus().name());
             stmt.setTimestamp(6, organ.getUpdatedAt() != null ? Timestamp.valueOf(organ.getUpdatedAt()) : new Timestamp(System.currentTimeMillis()));
             stmt.setTimestamp(7, organ.getDonatedDate() != null ? Timestamp.valueOf(organ.getDonatedDate()) : null);

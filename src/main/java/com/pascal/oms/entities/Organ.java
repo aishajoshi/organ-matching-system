@@ -8,7 +8,7 @@ public class Organ {
     private String organName;
     private String donorId;
     private String recipientId;
-    private BloodGroup bloodGroup;
+    private String bloodGroup;
     private OrganStatus status;
     private List<String> compatibleBloodTypes;
     private LocalDateTime createdAt;
@@ -50,11 +50,11 @@ public class Organ {
     }
 
 
-    public BloodGroup getBloodGroup() {
+    public String getBloodGroup() {
         return bloodGroup;
     }
 
-    public void setBloodGroup(BloodGroup bloodGroup) {
+    public void setBloodGroup(String bloodGroup) {
         this.bloodGroup = bloodGroup;
     }
 

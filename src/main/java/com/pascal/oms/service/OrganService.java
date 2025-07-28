@@ -1,6 +1,5 @@
 package com.pascal.oms.service;
 
-import com.pascal.oms.entities.BloodGroup;
 import com.pascal.oms.entities.Organ;
 import com.pascal.oms.entities.OrganStatus;
 import com.pascal.oms.repo.OrganRepo;
@@ -63,28 +62,6 @@ public class OrganService {
         return organRepo.getOrganById(organId);
     }
 
-    private BloodGroup parseBloodGroup(String bloodGroupStr) {
-        switch (bloodGroupStr) {
-            case "A+":
-                return BloodGroup.A_POSITIVE;
-            case "A-":
-                return BloodGroup.A_NEGATIVE;
-            case "B+":
-                return BloodGroup.B_POSITIVE;
-            case "B-":
-                return BloodGroup.B_NEGATIVE;
-            case "AB+":
-                return BloodGroup.AB_POSITIVE;
-            case "AB-":
-                return BloodGroup.AB_NEGATIVE;
-            case "O+":
-                return BloodGroup.O_POSITIVE;
-            case "O-":
-                return BloodGroup.O_NEGATIVE;
-            default:
-                throw new IllegalArgumentException("Invalid blood group: " + bloodGroupStr);
-        }
-    }
 
     public void addDonorOrgan(String donorId, String organName, String bloodGroup) {
         List<Organ> organs = new java.util.ArrayList<>();
@@ -92,7 +69,7 @@ public class OrganService {
         organ.setOrganId(Utils.UUID());
         organ.setDonorId(donorId);
         organ.setOrganName(organName);
-        organ.setBloodGroup(BloodGroup.fromValue(bloodGroup));
+        organ.setBloodGroup(bloodGroup);
         organ.setStatus(OrganStatus.AVAILABLE);
         organ.setCreatedAt(LocalDateTime.now());
         organ.setUpdatedAt(LocalDateTime.now());
@@ -107,7 +84,7 @@ public class OrganService {
             organ.setOrganId(Utils.UUID());
             organ.setRecipientId(recipientId);
             organ.setOrganName(organNames.get(i));
-            organ.setBloodGroup(BloodGroup.fromValue(bloodGroups.get(i)));
+            organ.setBloodGroup(bloodGroups.get(i));
             organ.setStatus(OrganStatus.MATCHED);
             organ.setCreatedAt(LocalDateTime.now());
             organ.setUpdatedAt(LocalDateTime.now());
@@ -140,7 +117,7 @@ public class OrganService {
         organ.setOrganId(Utils.UUID());
         organ.setRecipientId(recipientId);
         organ.setOrganName(organName);
-        organ.setBloodGroup(BloodGroup.fromValue(bloodGroup));
+        organ.setBloodGroup(bloodGroup);
         organ.setStatus(OrganStatus.REQUIRED);
         organ.setCreatedAt(LocalDateTime.now());
         organ.setUpdatedAt(LocalDateTime.now());
