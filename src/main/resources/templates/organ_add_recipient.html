@@ -7,24 +7,44 @@
     <h2>Add Recipient Organ Requirement</h2>
     <form action="/organ/add-recipient-organ" method="post">
         <div class="mb-3">
-            <label for="recipientId" class="form-label">Recipient ID</label>
-            <input type="text" class="form-control" id="recipientId" name="recipientId" required>
+            <label for="recipientId" class="form-label">Recipient</label>
+            <select class="form-select" id="recipientId" name="recipientId" required>
+                <option value="" disabled selected>Select Recipient</option>
+                <option th:each="recipient : ${recipients}" th:value="${recipient.recipientId}" th:text="${recipient.name + ' (' + recipient.recipientId + ')'}"></option>
+            </select>
         </div>
         <div class="mb-3">
             <label for="organName" class="form-label">Organ Name</label>
-            <input type="text" class="form-control" id="organName" name="organName" required>
-        </div>
-        <div class="mb-3">
-            <label for="organType" class="form-label">Organ Type</label>
-            <input type="text" class="form-control" id="organType" name="organType" required>
+            <select class="form-select" id="organName" name="organName" required>
+                <option value="" disabled selected>Select Organ</option>
+                <option value="Kidney">Kidney</option>
+                <option value="Liver">Liver</option>
+                <option value="Heart">Heart</option>
+                <option value="Lung">Lung</option>
+                <option value="Pancreas">Pancreas</option>
+                <option value="Intestine">Intestine</option>
+                <option value="Cornea">Cornea</option>
+                <option value="Skin">Skin</option>
+                <option value="Bone Marrow">Bone Marrow</option>
+            </select>
         </div>
         <div class="mb-3">
             <label for="bloodGroup" class="form-label">Blood Group</label>
-            <input type="text" class="form-control" id="bloodGroup" name="bloodGroup" required>
+            <select class="form-select" id="bloodGroup" name="bloodGroup" required>
+                <option value="" disabled selected>Select Blood Group</option>
+                <option value="A+">A+</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B-">B-</option>
+                <option value="AB+">AB+</option>
+                <option value="AB-">AB-</option>
+                <option value="O+">O+</option>
+                <option value="O-">O-</option>
+                <option value="Other">Other</option>
+            </select>
         </div>
         <button type="submit" class="btn btn-primary">Add Requirement</button>
     </form>
 </div>
 </body>
 </html>
-

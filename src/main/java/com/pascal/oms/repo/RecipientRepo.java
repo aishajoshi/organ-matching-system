@@ -8,9 +8,12 @@ import org.springframework.stereotype.Repository;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Repository
 public class RecipientRepo {
+    private static final Logger logger = LoggerFactory.getLogger(RecipientRepo.class);
 
     private final Datasource dataSource;
 
@@ -70,12 +73,12 @@ public class RecipientRepo {
 
                 recipient.setMeldScore(rs.getFloat("meld_score"));
                 recipient.setWaitingTime(rs.getInt("waiting_time"));
-
+                recipient.setRequiredOrgan(rs.getString("required_organ"));
                 recipients.add(recipient);
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error fetching recipients", e);
         }
 
         return recipients;
@@ -83,25 +86,20 @@ public class RecipientRepo {
 
     // Update recipient
     public boolean updateRecipient(Recipient recipient) throws SQLException {
-        String sql = "UPDATE recipient SET name=?, age=?, blood_group=?, phone=?, email=?, status=?, urgency_level=?, meld_score=?, waiting_time=? " +
-                "WHERE recipient_id=?";
-
+        String sql = "UPDATE recipient SET name=?, age=?, blood_group=?, phone=?, email=?, status=?, urgency_level=?, meld_score=?, waiting_time=?, required_organ=? WHERE recipient_id=?";
         try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-
             stmt.setString(1, recipient.getName());
             stmt.setInt(2, recipient.getAge());
             stmt.setString(3, recipient.getBloodGroup());
             stmt.setString(4, recipient.getPhone());
             stmt.setString(5, recipient.getEmail());
             stmt.setString(6, recipient.getStatus());
-
             stmt.setInt(7, recipient.getUrgencyLevel());
-
             stmt.setFloat(8, recipient.getMeldScore());
             stmt.setInt(9, recipient.getWaitingTime());
-            stmt.setString(10, recipient.getRecipientId());
-
+            stmt.setString(10, recipient.getRequiredOrgan());
+            stmt.setString(11, recipient.getRecipientId());
             return stmt.executeUpdate() > 0;
         }
     }
@@ -118,7 +116,7 @@ public class RecipientRepo {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error fetching last recipient ID", e);
         }
 
         return null;

@@ -1,24 +1,21 @@
 package com.pascal.oms.service;
 
 import com.pascal.oms.entities.Organ;
+import com.pascal.oms.entities.OrganStatus;
 import com.pascal.oms.entities.Recipient;
 import com.pascal.oms.repo.OrganRepo;
 import com.pascal.oms.repo.RecipientRepo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
-public class OrganMatchingService {
+public class OrganMatcher {
 
-    @Autowired
-    private OrganRepo organRepo;
+    private final OrganRepo organRepo;
 
-    @Autowired
-    private RecipientRepo recipientRepo;
+    private final RecipientRepo recipientRepo;
 
     private static final Map<String, List<String>> compatibleBloodGroups = new HashMap<>() {{
         put("O-", List.of("O-", "O+", "A-", "A+", "B-", "B+", "AB-", "AB+"));
@@ -31,30 +28,39 @@ public class OrganMatchingService {
         put("AB+", List.of("AB+"));
     }};
 
+    public OrganMatcher(OrganRepo organRepo, RecipientRepo recipientRepo) {
+        this.organRepo = organRepo;
+        this.recipientRepo = recipientRepo;
+    }
+
     public void matchOrgansToRecipients() {
-        List<Organ> availableOrgans = organRepo.findByStatus(OrganStatus.AVAILABLE);
-        List<Recipient> recipients = recipientRepo.findAll();
+        try {
+            List<Organ> availableOrgans = organRepo.findOrgansByStatus(OrganStatus.AVAILABLE);
+            List<Recipient> recipients = recipientRepo.getAllRecipients();
 
-        for (Organ organ : availableOrgans) {
-            List<Recipient> compatibleRecipients = recipients.stream()
-                    .filter(r -> r.getRequiredOrgan().equalsIgnoreCase(organ.getOrganName()))
-                    .filter(r -> isBloodCompatible(organ.getBloodGroup().name(), r.getBloodGroup()))
-                    .filter(r -> r.getStatus() == null || r.getStatus().equalsIgnoreCase("WAITING"))
-                    .sorted(Comparator.comparing(Recipient::getUrgencyLevel, Comparator.nullsLast(String::compareTo)))
-                    .collect(Collectors.toList());
+            for (Organ organ : availableOrgans) {
+                List<Recipient> compatibleRecipients = recipients.stream()
+                        .filter(r -> r.getRequiredOrgan() != null && r.getRequiredOrgan().equalsIgnoreCase(organ.getOrganName()))
+                        .filter(r -> isBloodCompatible(organ.getBloodGroup().name(), r.getBloodGroup()))
+                        .filter(r -> r.getStatus() == null || r.getStatus().equalsIgnoreCase("WAITING"))
+                        .sorted(Comparator.comparingInt(Recipient::getUrgencyLevel).reversed())
+                        .toList();
 
-            if (!compatibleRecipients.isEmpty()) {
-                Recipient bestMatch = compatibleRecipients.get(0);
+                if (!compatibleRecipients.isEmpty()) {
+                    Recipient bestMatch = compatibleRecipients.get(0);
 
-                organ.setRecipientId(bestMatch.getRecipientId());
-                organ.setStatus(OrganStatus.ASSIGNED);
-                organ.setReceivedDate(LocalDateTime.now());
+                    organ.setRecipientId(bestMatch.getRecipientId());
+                    organ.setStatus(OrganStatus.MATCHED);
+                    organ.setReceivedDate(LocalDateTime.now());
 
-                bestMatch.setStatus("MATCHED");
+                    bestMatch.setStatus("MATCHED");
 
-                organRepo.save(organ);
-                recipientRepo.save(bestMatch);
+                    organRepo.updateOrgan(organ);
+                    recipientRepo.updateRecipient(bestMatch);
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

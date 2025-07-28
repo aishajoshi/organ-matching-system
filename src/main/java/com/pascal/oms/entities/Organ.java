@@ -8,7 +8,6 @@ public class Organ {
     private String organName;
     private String donorId;
     private String recipientId;
-    private OrganType organType;
     private BloodGroup bloodGroup;
     private OrganStatus status;
     private List<String> compatibleBloodTypes;
@@ -50,13 +49,6 @@ public class Organ {
         this.recipientId = recipientId;
     }
 
-    public OrganType getOrganType() {
-        return organType;
-    }
-
-    public void setOrganType(OrganType organType) {
-        this.organType = organType;
-    }
 
     public BloodGroup getBloodGroup() {
         return bloodGroup;
@@ -129,7 +121,6 @@ public class Organ {
                 ", organName='" + organName + '\'' +
                 ", donorId='" + donorId + '\'' +
                 ", recipientId='" + recipientId + '\'' +
-                ", organType=" + organType +
                 ", bloodGroup=" + bloodGroup +
                 ", status=" + status +
                 ", compatibleBloodTypes=" + compatibleBloodTypes +

@@ -13,8 +13,9 @@ public class Recipient {
     private String status;
     private List<Organ> organs;
     private int urgencyLevel;
-    private float meldScore;
     private int waitingTime;
+    private String requiredOrgan; // New field for required organ
+    private float meldScore;
 
     public Recipient() {}
 
@@ -90,19 +91,27 @@ public class Recipient {
         this.urgencyLevel = urgencyLevel;
     }
 
-    public float getMeldScore() {
-        return meldScore;
-    }
-
-    public void setMeldScore(float meldScore) {
-        this.meldScore = meldScore;
-    }
-
     public int getWaitingTime() {
         return waitingTime;
     }
 
     public void setWaitingTime(int waitingTime) {
         this.waitingTime = waitingTime;
+    }
+
+    public String getRequiredOrgan() {
+        return requiredOrgan;
+    }
+
+    public void setRequiredOrgan(String requiredOrgan) {
+        this.requiredOrgan = requiredOrgan;
+    }
+
+    public float getMeldScore() {
+        return meldScore;
+    }
+
+    public void setMeldScore(float meldScore) {
+        this.meldScore = meldScore;
     }
 }

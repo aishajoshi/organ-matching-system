@@ -3,7 +3,6 @@ package com.pascal.oms.service;
 import com.pascal.oms.entities.BloodGroup;
 import com.pascal.oms.entities.Organ;
 import com.pascal.oms.entities.OrganStatus;
-import com.pascal.oms.entities.OrganType;
 import com.pascal.oms.repo.OrganRepo;
 import com.pascal.oms.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,7 +69,6 @@ public class OrganService {
         organ.setOrganId(Utils.UUID());
         organ.setDonorId(donorId);
         organ.setOrganName(organName);
-        organ.setOrganType(OrganType.valueOf(organType));
         organ.setBloodGroup(BloodGroup.valueOf(bloodGroup));
         organ.setStatus(OrganStatus.AVAILABLE);
         organ.setCreatedAt(LocalDateTime.now());
@@ -86,7 +84,6 @@ public class OrganService {
             organ.setOrganId(Utils.UUID());
             organ.setRecipientId(recipientId);
             organ.setOrganName(organNames.get(i));
-            organ.setOrganType(OrganType.valueOf(organTypes.get(i)));
             organ.setBloodGroup(BloodGroup.valueOf(bloodGroups.get(i)));
             organ.setStatus(OrganStatus.MATCHED);
             organ.setCreatedAt(LocalDateTime.now());
@@ -100,14 +97,45 @@ public class OrganService {
         organRepo.assignOrganToRecipient(organId, recipientId);
     }
 
-    // Validation for saving new organ (donorId must be present)
+    public boolean approveOrgan(String organId) {
+        Organ organ = organRepo.getOrganById(organId);
+        if (organ != null && organ.getStatus() == OrganStatus.MATCHED) {
+            organ.setStatus(OrganStatus.APPROVED);
+            organ.setUpdatedAt(LocalDateTime.now());
+            try {
+                return organRepo.updateOrgan(organ);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+        return false;
+    }
+
+    public void addRecipientOrgan(String recipientId, String organName, String organType, String bloodGroup) {
+        Organ organ = new Organ();
+        organ.setOrganId(Utils.UUID());
+        organ.setRecipientId(recipientId);
+        organ.setOrganName(organName);
+        organ.setBloodGroup(BloodGroup.valueOf(bloodGroup));
+        organ.setStatus(OrganStatus.REQUIRED);
+        organ.setCreatedAt(LocalDateTime.now());
+        organ.setUpdatedAt(LocalDateTime.now());
+        try {
+            organRepo.saveOrgan(organ);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Validation for saving new organ (donorId OR recipientId must be present)
     private boolean isValidOrganForSave(Organ organ) {
         return organ != null
                 && organ.getOrganName() != null && !organ.getOrganName().isBlank()
-                && organ.getOrganType() != null
                 && organ.getBloodGroup() != null
                 && organ.getStatus() != null
-                && organ.getDonorId() != null && !organ.getDonorId().isBlank();
+                && ((organ.getDonorId() != null && !organ.getDonorId().isBlank())
+                || (organ.getRecipientId() != null && !organ.getRecipientId().isBlank()));
     }
 
     // Validation for update (organId must be present)
@@ -115,7 +143,6 @@ public class OrganService {
         return organ != null
                 && organ.getOrganId() != null && !organ.getOrganId().isBlank()
                 && organ.getOrganName() != null && !organ.getOrganName().isBlank()
-                && organ.getOrganType() != null
                 && organ.getBloodGroup() != null
                 && organ.getStatus() != null;
     }

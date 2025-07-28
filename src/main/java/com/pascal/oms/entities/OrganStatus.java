@@ -11,6 +11,8 @@ public enum OrganStatus {
     AVAILABLE("AVAILABLE"),
     MATCHED("MATCHED"),
     UNAVAILABLE("UNAVAILABLE"),
+    APPROVED("APPROVED"),
+    REQUIRED("REQUIRED"),
     ;
 
     private final String status;

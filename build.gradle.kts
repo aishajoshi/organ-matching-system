@@ -22,6 +22,8 @@ dependencies {
     implementation("org.webjars:font-awesome:6.7.2")
 
     implementation("jakarta.servlet:jakarta.servlet-api:6.1.0")
+    implementation("org.slf4j:slf4j-api:2.0.13")
+
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.13.0")
 }
 
