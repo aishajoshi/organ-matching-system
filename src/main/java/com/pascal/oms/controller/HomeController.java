@@ -2,16 +2,31 @@ package com.pascal.oms.controller;
 
 import com.pascal.oms.endpoint.ParkingTicketManagementService;
 import com.pascal.oms.entities.Session;
+import com.pascal.oms.service.DonorService;
+import com.pascal.oms.service.RecipientService;
+import com.pascal.oms.service.OrganService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
-public class   HomeController {
+public class HomeController {
     private final ParkingTicketManagementService service = ParkingTicketManagementService.getInstance();
 
+    @Autowired
+    private DonorService donorService;
+    @Autowired
+    private RecipientService recipientService;
+    @Autowired
+    private OrganService organService;
 
     @GetMapping(value = {"/", "/index", "/home", "/dashboard"})
     public String home(Model model, HttpSession session) {
@@ -38,5 +53,15 @@ public class   HomeController {
     @GetMapping("/donor")
     public String donor() {
         return "donor";
+    }
+
+    @GetMapping("/api/stats")
+    @ResponseBody
+    public Map<String, Integer> getStats() {
+        Map<String, Integer> stats = new HashMap<>();
+        stats.put("totalDonors", donorService.getAllDonors().size());
+        stats.put("totalRecipients", recipientService.getAllRecipients().size());
+        stats.put("totalOrgans", organService.getAllOrgans().size());
+        return stats;
     }
 }

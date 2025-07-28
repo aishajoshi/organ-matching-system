@@ -7,9 +7,9 @@
     <div class="content">
         <div class="card mb-4">
             <h3>System Overview</h3>
-            <p>Total Donors: <span>0</span></p>
-            <p>Total Recipients: <span>0</span></p>
-            <p>Available Organs: <span>0</span></p>
+            <p>Total Donors: <span id="totalDonors">0</span></p>
+            <p>Total Recipients: <span id="totalRecipients">0</span></p>
+            <p>Total Organs: <span id="totalOrgans">0</span></p>
         </div>
         <div class="card">
             <h3>Recent Matches</h3>
@@ -18,5 +18,21 @@
     </div>
 </div>
 <div th:replace="~{footer :: footer}"></div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('/api/stats')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('totalDonors').textContent = data.totalDonors;
+                document.getElementById('totalRecipients').textContent = data.totalRecipients;
+                document.getElementById('totalOrgans').textContent = data.totalOrgans;
+            })
+            .catch(err => {
+                document.getElementById('totalDonors').textContent = 'Error';
+                document.getElementById('totalRecipients').textContent = 'Error';
+                document.getElementById('totalOrgans').textContent = 'Error';
+            });
+    });
+</script>
 </body>
 </html>
