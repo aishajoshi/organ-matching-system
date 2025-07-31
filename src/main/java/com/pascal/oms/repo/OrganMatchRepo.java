@@ -23,11 +23,12 @@ public class OrganMatchRepo {
 
     public void saveOrganMatch(OrganMatch match) throws SQLException {
         // Check if match already exists for this organ and recipient
-        String checkSql = "SELECT COUNT(*) FROM organ_match WHERE organ_id = ? AND recipient_id = ?";
+        String checkSql = "SELECT COUNT(*) FROM organ_match WHERE donor_organ_id = ? AND recipient_organ_id = ? AND recipient_id = ?";
         try (Connection conn = datasource.getConnection();
              PreparedStatement checkStmt = conn.prepareStatement(checkSql)) {
-            checkStmt.setString(1, match.getOrganId());
-            checkStmt.setString(2, match.getRecipientId());
+            checkStmt.setString(1, match.getDonnerOrganId());
+            checkStmt.setString(2, match.getRecipientOrganId());
+            checkStmt.setString(3, match.getRecipientId());
             java.sql.ResultSet rs = checkStmt.executeQuery();
             if (rs.next() && rs.getInt(1) > 0) {
                 // Match already exists, do not insert
@@ -35,15 +36,16 @@ public class OrganMatchRepo {
             }
         }
         // Insert new match if not exists
-        String sql = "INSERT INTO organ_match (match_id, organ_id, donor_id, recipient_id, match_date, status) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO organ_match (match_id, donor_organ_id, recipient_organ_id, donor_id, recipient_id, match_date, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = datasource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, match.getMatchId() != null ? match.getMatchId() : UUID.randomUUID().toString());
-            stmt.setString(2, match.getOrganId());
-            stmt.setString(3, match.getDonorId());
-            stmt.setString(4, match.getRecipientId());
-            stmt.setTimestamp(5, match.getMatchDate() != null ? Timestamp.valueOf(match.getMatchDate()) : new Timestamp(System.currentTimeMillis()));
-            stmt.setString(6, match.getStatus() != null ? match.getStatus() : "MATCHED");
+            stmt.setString(2, match.getDonnerOrganId());
+            stmt.setString(3, match.getRecipientOrganId());
+            stmt.setString(4, match.getDonorId());
+            stmt.setString(5, match.getRecipientId());
+            stmt.setTimestamp(6, match.getMatchDate() != null ? Timestamp.valueOf(match.getMatchDate()) : new Timestamp(System.currentTimeMillis()));
+            stmt.setString(7, match.getStatus() != null ? match.getStatus() : "MATCHED");
             stmt.executeUpdate();
         }
     }
@@ -52,7 +54,7 @@ public class OrganMatchRepo {
         List<OrganMatch> matches = new ArrayList<>();
         String sql = "SELECT m.*, o.organ_name, d.name AS donor_name, r.name AS recipient_name " +
                 "FROM organ_match m " +
-                "JOIN organ o ON m.organ_id = o.organ_id " +
+                "JOIN organ o ON m.donor_organ_id = o.organ_id " +
                 "JOIN donor d ON m.donor_id = d.donor_id " +
                 "JOIN recipient r ON m.recipient_id = r.recipient_id";
         try (Connection conn = datasource.getConnection();
@@ -61,7 +63,8 @@ public class OrganMatchRepo {
             while (rs.next()) {
                 OrganMatch match = new OrganMatch();
                 match.setMatchId(rs.getString("match_id"));
-                match.setOrganId(rs.getString("organ_id"));
+                match.setDonnerOrganId(rs.getString("donor_organ_id"));
+                match.setRecipientOrganId(rs.getString("recipient_organ_id"));
                 match.setDonorId(rs.getString("donor_id"));
                 match.setRecipientId(rs.getString("recipient_id"));
                 java.sql.Timestamp matchDate = rs.getTimestamp("match_date");
@@ -87,7 +90,8 @@ public class OrganMatchRepo {
                 if (rs.next()) {
                     OrganMatch match = new OrganMatch();
                     match.setMatchId(rs.getString("match_id"));
-                    match.setOrganId(rs.getString("organ_id"));
+                    match.setDonnerOrganId(rs.getString("donor_organ_id"));
+                    match.setRecipientOrganId(rs.getString("recipient_organ_id"));
                     match.setDonorId(rs.getString("donor_id"));
                     match.setRecipientId(rs.getString("recipient_id"));
                     java.sql.Timestamp matchDate = rs.getTimestamp("match_date");

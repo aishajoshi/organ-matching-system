@@ -230,15 +230,36 @@ public class OrganRepo {
         }
     }
 
-    public void updateOrganStatusForDonorAndRecipient(String organName, String donorId, String recipientId, OrganStatus status) throws SQLException {
-        String sql = "UPDATE organ SET status = ? WHERE organ_name = ? AND (donor_id = ? OR recipient_id = ?)";
-        try (Connection conn = datasource.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, status.name());
-            stmt.setString(2, organName);
-            stmt.setString(3, donorId);
-            stmt.setString(4, recipientId);
-            stmt.executeUpdate();
+    public void updateOrganStatusForDonorAndRecipient(String organName, String donorId, String recipientId, String donorOrganId, String recipientOrganId, OrganStatus status) throws SQLException {
+        System.out.println("Updating organ status for donor and recipient: " + organName + ", Donor ID: " + donorId + ", Recipient ID: " + recipientId);
+        System.out.println("Donor Organ ID: " + donorOrganId + ", Recipient Organ ID: " + recipientOrganId);
+        String sqlDonor = "UPDATE organ SET status = ? WHERE  organ_id = ?";
+        String sqlRecipient = "UPDATE organ SET status = ? WHERE organ_id = ?";
+
+        try (Connection conn = datasource.getConnection()) {
+            conn.setAutoCommit(false); // Start transaction
+
+            try (
+                    PreparedStatement stmtDonor = conn.prepareStatement(sqlDonor);
+                    PreparedStatement stmtRecipient = conn.prepareStatement(sqlRecipient)
+            ) {
+                // Update donor
+                stmtDonor.setString(1, status.name());
+                stmtDonor.setString(2, donorOrganId);
+                stmtDonor.executeUpdate();
+
+                // Update recipient
+                stmtRecipient.setString(1, status.name());
+                stmtRecipient.setString(2, recipientOrganId);
+                stmtRecipient.executeUpdate();
+
+                conn.commit(); // Commit transaction if both succeed
+            } catch (SQLException e) {
+                conn.rollback(); // Rollback if any failure
+                throw e;
+            } finally {
+                conn.setAutoCommit(true); // Restore default behavior
+            }
         }
     }
 }

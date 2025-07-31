@@ -54,10 +54,19 @@ public class OrganMatcher {
 
                 if (!compatibleRecipients.isEmpty()) {
                     Recipient bestMatch = compatibleRecipients.get(0);
+                    Organ recipientMatch = bestMatch.getOrgans().stream()
+                            .filter(recOrg -> recOrg.getOrganName().equalsIgnoreCase(organ.getOrganName()))
+                            .findFirst()
+                            .orElse(null);
+                    if (recipientMatch == null) {
+                        System.out.println("No matching organ found for recipient: " + bestMatch.getRecipientId());
+                        continue; // Skip if no matching organ found
+                    }
 
                     OrganMatch match = new OrganMatch();
                     match.setMatchId(UUID.randomUUID().toString());
-                    match.setOrganId(organ.getOrganId());
+                    match.setDonnerOrganId(organ.getOrganId());
+                    match.setRecipientOrganId(recipientMatch.getOrganId());
                     match.setDonorId(organ.getDonorId());
                     match.setRecipientId(bestMatch.getRecipientId());
                     match.setMatchDate(LocalDateTime.now());
@@ -84,12 +93,13 @@ public class OrganMatcher {
         try {
             OrganMatch match = organMatchRepo.getOrganMatchById(matchId);
             if (match == null || "APPROVED".equalsIgnoreCase(match.getStatus())) {
+                System.out.println("Match not found or already approved: " + matchId);
                 return false;
             }
             // Update match status to APPROVED
             organMatchRepo.updateMatchStatus(matchId, "APPROVED");
             // Update organ status for both donor and recipient to APPROVED
-            organRepo.updateOrganStatusForDonorAndRecipient(match.getOrganName(), match.getDonorId(), match.getRecipientId(), OrganStatus.APPROVED);
+            organRepo.updateOrganStatusForDonorAndRecipient(match.getOrganName(), match.getDonorId(), match.getRecipientId(), match.getDonnerOrganId(), match.getRecipientOrganId(), OrganStatus.APPROVED);
             return true;
         } catch (Exception e) {
             e.printStackTrace();

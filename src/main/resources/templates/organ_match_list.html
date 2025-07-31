@@ -25,8 +25,8 @@
         <tr th:each="match : ${matches}">
             <td th:text="${match.matchId}"></td>
             <td th:text="${match.organName}"></td>
-            <td th:text="${match.donorName}"></td>
-            <td th:text="${match.recipientName}"></td>
+            <td th:text="${match.donorName + ' - (' + match.donorId + ')'}"></td>
+            <td th:text="${match.recipientName + ' - (' + match.recipientId + ')'}"></td>
             <td th:text="${#temporals.format(match.matchDate, 'yyyy-MM-dd HH:mm')}"></td>
             <td th:text="${match.status}"></td>
             <td>

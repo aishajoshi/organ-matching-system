@@ -4,7 +4,8 @@ import java.time.LocalDateTime;
 
 public class OrganMatch {
     private String matchId;
-    private String organId;
+    private String donnerOrganId;
+    private String recipientOrganId;
     private String donorId;
     private String recipientId;
     private LocalDateTime matchDate;
@@ -13,32 +14,86 @@ public class OrganMatch {
     private String recipientName;
     private String organName;
 
-    public OrganMatch() {}
+    public OrganMatch() {
+    }
 
-    public String getMatchId() { return matchId; }
-    public void setMatchId(String matchId) { this.matchId = matchId; }
+    public String getMatchId() {
+        return matchId;
+    }
 
-    public String getOrganId() { return organId; }
-    public void setOrganId(String organId) { this.organId = organId; }
+    public void setMatchId(String matchId) {
+        this.matchId = matchId;
+    }
 
-    public String getDonorId() { return donorId; }
-    public void setDonorId(String donorId) { this.donorId = donorId; }
+    public String getDonnerOrganId() {
+        return donnerOrganId;
+    }
 
-    public String getRecipientId() { return recipientId; }
-    public void setRecipientId(String recipientId) { this.recipientId = recipientId; }
+    public void setDonnerOrganId(String donnerOrganId) {
+        this.donnerOrganId = donnerOrganId;
+    }
 
-    public LocalDateTime getMatchDate() { return matchDate; }
-    public void setMatchDate(LocalDateTime matchDate) { this.matchDate = matchDate; }
+    public String getRecipientOrganId() {
+        return recipientOrganId;
+    }
 
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
+    public void setRecipientOrganId(String recipientOrganId) {
+        this.recipientOrganId = recipientOrganId;
+    }
 
-    public String getDonorName() { return donorName; }
-    public void setDonorName(String donorName) { this.donorName = donorName; }
+    public String getDonorId() {
+        return donorId;
+    }
 
-    public String getRecipientName() { return recipientName; }
-    public void setRecipientName(String recipientName) { this.recipientName = recipientName; }
+    public void setDonorId(String donorId) {
+        this.donorId = donorId;
+    }
 
-    public String getOrganName() { return organName; }
-    public void setOrganName(String organName) { this.organName = organName; }
+    public String getRecipientId() {
+        return recipientId;
+    }
+
+    public void setRecipientId(String recipientId) {
+        this.recipientId = recipientId;
+    }
+
+    public LocalDateTime getMatchDate() {
+        return matchDate;
+    }
+
+    public void setMatchDate(LocalDateTime matchDate) {
+        this.matchDate = matchDate;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getDonorName() {
+        return donorName;
+    }
+
+    public void setDonorName(String donorName) {
+        this.donorName = donorName;
+    }
+
+    public String getRecipientName() {
+        return recipientName;
+    }
+
+    public void setRecipientName(String recipientName) {
+        this.recipientName = recipientName;
+    }
+
+    public String getOrganName() {
+        return organName;
+    }
+
+    public void setOrganName(String organName) {
+        this.organName = organName;
+    }
 }
